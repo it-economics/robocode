@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * https://robocode.sourceforge.io/license/epl-v10.html
  */
-package main.java.com.ite.robocode;
+package com.ite.robocode;
 
 
 import robocode.HitByBulletEvent;
@@ -33,6 +33,7 @@ public class MyFirstIteRobot extends Robot {
 			turnGunRight(360); // Spin gun around
 			back(100); // Move back 100
 			turnGunRight(360); // Spin gun around
+			back(233);
 		}
 	}
 
