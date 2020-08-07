@@ -1,4 +1,4 @@
-name: Maven Compile
+name: Gradle Compile
 
 on: [push,pull_request,pull_request_target]
 
@@ -11,5 +11,5 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Build with Maven
-        run: ./compile.sh
+      - name: Build with Gradle
+        run: ./gradlew build
