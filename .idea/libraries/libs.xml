@@ -17,6 +17,7 @@
     <JAVADOC />
     <SOURCES>
       <root url="file://$PROJECT_DIR$/robots" />
+      <root url="file://$PROJECT_DIR$/javadoc/robocode" />
     </SOURCES>
   </library>
 </component>
