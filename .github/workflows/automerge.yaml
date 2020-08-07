@@ -25,3 +25,4 @@ jobs:
           MERGE_METHOD: "squash"
           MERGE_FORKS: true
           MERGE_COMMIT_MESSAGE: "pull-request-title-and-description"
+          MERGE_LABELS: "automerge"
