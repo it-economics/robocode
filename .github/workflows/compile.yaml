@@ -1,8 +1,4 @@
 name: Maven Compile
-author: Alex Kucksdorf@it-economics
-branding:
-  icon: coffee
-  color: blue
 
 on: [push,pull_request,pull_request_target]
 
