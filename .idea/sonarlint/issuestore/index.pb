@@ -1,0 +1,23 @@
+
+P
+ robots/sample/RamFire.properties,7\0\709a0d239b9f281686eff9a4ab28cb42a457b813
+O
+robots/sample/MyFirstRobot.java,5\5\554ae9c4928677a3c4046b5486524b34dc21b71c
+J
+robots/sample/RamFire.java,2\2\22995a10f7c4a19f595ddde5ae6ac68eb2b246c6
+J
+robots/sample/SpinBot.java,4\6\462288ece7058fe4532c1a9de91659307296e78c
+Q
+!robots/sample/Interactive_v2.java,c\8\c8f0185c323cbf9507de1e64fee171182aaa2c72
+H
+robots/sample/Crazy.java,7\e\7e4c4569dce415fb510d0585a6494e85e9974126
+G
+robots/sample/Fire.java,7\a\7a1e7ad212ced8db565256295d0ebdb79377f2db
+U
+%robots/sample/MyFirstJuniorRobot.java,e\8\e86ba74862947ccb13f66ad5b78e94bc1a5844a7
+P
+ robots/sample/PaintingRobot.java,f\6\f60cb77600edd1763bacee1107a3ce5b019f1112
+J
+robots/sample/Tracker.java,7\2\726cc22dcadd199cb6f17b6bb898b70791f75125
+R
+"robots/com/ite/otd/IteFighter.java,b\1\b17842fde1ee40594f3de5dce5e589bde277b40e
