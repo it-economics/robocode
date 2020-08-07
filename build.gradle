@@ -20,15 +20,14 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/*')
-
-    // Use JUnit Jupiter API for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-
-    // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 }
 
-task run(type: JavaExec, dependsOn: 'build') {
+task copybin(type: Copy) {
+    destinationDir = file('robots')
+    from ('build/classes/java/main')
+}
+
+task run(type: JavaExec, dependsOn: ['build', 'copybin']) {
     classpath += sourceSets.main.runtimeClasspath
     classpath += files('build/libs')
     classpath.each { println it }
