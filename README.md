@@ -20,6 +20,6 @@ Requirements: In order to run Robocode, Java 6 Standard Edition (SE) or a newer 
 7. let the fun begin and program your own robot behaviour. 
 8. you can test your robots behaviour by performing `gradle run`. In the pop up window press `STRG + N`, choose the package `com.ite.robocode` and add your robot. Add a sample robot from the sample package, hit `Start Battle` and watch your robot perform
 ![](readme-resources/NewBattleDialog.png)
-9. once you finished or time runs out you need to create a `Pull Request`
-10. ![ENTER HOWTO PICTURE HERE]
+9. once you finished or time runs out you need to create a `Pull Request` 
+![](readme-resources/pull-request.png)
 11. you're done. Relax or cheer for your robot while watching the performance against the others!
