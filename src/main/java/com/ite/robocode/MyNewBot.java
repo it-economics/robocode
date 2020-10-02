@@ -24,8 +24,8 @@ public class MyNewBot extends Robot {
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(Color.orange);
-		setGunColor(Color.orange);
+		setBodyColor(Color.red);
+		setGunColor(Color.red);
 		setRadarColor(Color.red);
 		setScanColor(Color.red);
 		setBulletColor(Color.red);
