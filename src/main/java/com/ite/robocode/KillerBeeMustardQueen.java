@@ -16,7 +16,7 @@ import java.awt.Color;
 
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-public class KillerBeeMustartQueen extends Robot {
+public class KillerBeeMustardQueen extends Robot {
 	int dist = 50; // distance to move when we're hit
 
 	/**
