@@ -17,8 +17,7 @@ public class NewRobot extends robocode.Robot {
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(java.awt.Color.YELLOW)
-
+		setBodyColor(java.awt.Color.YELLOW);
 		setGunColor(java.awt.Color.BLACK);
 		setRadarColor(java.awt.Color.BLACK);
 		setScanColor(java.awt.Color.BLUE);
