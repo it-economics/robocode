@@ -24,10 +24,11 @@ public class MyNewBot extends Robot {
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(Color.ora);
+		setBodyColor(Color.red);
 		setGunColor(Color.red);
 		setRadarColor(Color.red);
-		
+
+
 		setBulletColor(Color.red);
 
 		// Spin the gun around slowly... forever
