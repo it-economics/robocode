@@ -7,16 +7,9 @@
  */
 package com.ite.robocode;
 
-import robocode.HitByBulletEvent;
-import robocode.HitRobotEvent;
-import robocode.Robot;
-import robocode.ScannedRobotEvent;
-
-import java.awt.Color;
-
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-public class MyNewBot extends Robot {
+public class SvenRobot extends robocode.Robot {
 	int dist = 50; // distance to move when we're hit
 
 	/**
@@ -24,30 +17,29 @@ public class MyNewBot extends Robot {
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(Color.red);
-		setGunColor(Color.red);
-		setRadarColor(Color.red);
-
-
-		setBulletColor(Color.red);
+		setBodyColor(java.awt.Color.YELLOW);
+		setGunColor(java.awt.Color.BLACK);
+		setRadarColor(java.awt.Color.BLACK);
+		setScanColor(java.awt.Color.BLUE);
+		setBulletColor(java.awt.Color.GRAY);
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			turnGunRight(5);
+			turnGunRight(20);
 		}
 	}
 
 	/**
 	 * onScannedRobot:  Fire!
 	 */
-	public void onScannedRobot(ScannedRobotEvent e) {
+	public void onScannedRobot(robocode.ScannedRobotEvent e) {
 		// If the other robot is close by, and we have plenty of life,
 		// fire hard!
-		if (e.getDistance() < 50 && getEnergy() > 50) {
+		if (e.getDistance() < 150) {
 			fire(3);
 		} // otherwise, fire 1.
 		else {
-			fire(1);
+			fire(2);
 		}
 		// Call scan again, before we turn the gun
 		scan();
@@ -56,21 +48,21 @@ public class MyNewBot extends Robot {
 	/**
 	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
 	 */
-	public void onHitByBullet(HitByBulletEvent e) {
-		turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
-
-		ahead(dist);
-		dist *= -1;
+	public void onHitByBullet(robocode.HitByBulletEvent e) {
+		turnRight(70);
+		ahead(200);
+		turnLeft(70);
 		scan();
 	}
 
 	/**
 	 * onHitRobot:  Aim at it.  Fire Hard!
 	 */
-	public void onHitRobot(HitRobotEvent e) {
+	public void onHitRobot(robocode.HitRobotEvent e) {
 		double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
 
 		turnGunRight(turnGunAmt);
-		fire(3);
+		fire(2);
+		scan();
 	}
 }
