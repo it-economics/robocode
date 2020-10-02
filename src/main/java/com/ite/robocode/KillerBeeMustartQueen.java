@@ -16,7 +16,7 @@ import java.awt.Color;
 
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-public class MyNewBot extends Robot {
+public class KillerBeeMustartQueen extends Robot {
 	int dist = 50; // distance to move when we're hit
 
 	/**
@@ -24,11 +24,11 @@ public class MyNewBot extends Robot {
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(Color.orange);
+		setBodyColor(Color.black);
 		setGunColor(Color.orange);
-		setRadarColor(Color.red);
+		setRadarColor(Color.green);
 		setScanColor(Color.red);
-		setBulletColor(Color.red);
+		setBulletColor(Color.pink);
 
 		// Spin the gun around slowly... forever
 		while (true) {
