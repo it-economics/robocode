@@ -15,15 +15,11 @@ on:
       - completed
   status: {}
 jobs:
-    tepqs:
-      - uses: actions/labeler@v2
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
   automerge:
     needs: triage
     runs-on: ubuntu-latest
     steps:
-      - auto-label
+      - autolabel
         uses: actions/labeler@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
