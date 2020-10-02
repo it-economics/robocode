@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * https://robocode.sourceforge.io/license/epl-v10.html
  */
-package ite;
+package com.ite.robocode;
 
 import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
