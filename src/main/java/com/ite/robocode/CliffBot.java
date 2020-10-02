@@ -16,7 +16,7 @@ import java.awt.Color;
 
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-public class MyNewBot extends Robot {
+public class CliffBot extends Robot {
 	int dist = 50; // distance to move when we're hit
 
 	/**
@@ -24,16 +24,16 @@ public class MyNewBot extends Robot {
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(Color.red);
-		setGunColor(Color.red);
-		setRadarColor(Color.red);
+		setBodyColor(Color.black);
+		setGunColor(Color.black);
+		setRadarColor(Color.black);
 
 
 		setBulletColor(Color.red);
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			turnGunRight(5);
+			turnGunRight(10);
 		}
 	}
 
