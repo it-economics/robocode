@@ -5,6 +5,7 @@
 .idea
 .settings
 !/robots/robot.database
+robots/sample
 !/robocode.iml
 config
 
