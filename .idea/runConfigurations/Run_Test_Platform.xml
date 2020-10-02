@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Run Test Platform" type="JarApplication">
-    <option name="JAR_PATH" value="$PROJECT_DIR$/libs/robocode.jar" />
-    <option name="VM_PARAMETERS" value="-Xmx512M -cp -XX:+IgnoreUnrecognizedVMOptions" />
-    <option name="WORKING_DIRECTORY" value="C:\Projekte\robocode" />
-    <option name="ALTERNATIVE_JRE_PATH" />
-    <method v="2" />
-  </configuration>
-</component>

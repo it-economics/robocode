@@ -2,13 +2,13 @@
 .gradle
 
 # Ignore intelliJ and robocode settings
-.idea
+.idea/*
 .settings
-!/robots/robot.database
-robots/sample
-!/robocode.iml
+robots/*
+robocode.iml
 config
 
 # Ignore Gradle build output directory
 build
 src/main/resources/
+/.idea/
