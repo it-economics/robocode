@@ -52,7 +52,6 @@ public class SvenRobot extends robocode.Robot {
 		turnRight(70);
 		ahead(200);
 		turnLeft(70);
-
 		scan();
 	}
 
