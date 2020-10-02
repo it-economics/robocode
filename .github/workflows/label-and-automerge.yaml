@@ -1,4 +1,4 @@
-name: automerge
+name: label-automerge
 on:
   pull_request:
     types:
@@ -15,9 +15,7 @@ on:
       - completed
   status: {}
 jobs:
- triage:
-    runs-on: ubuntu-latest
-    steps:
+    tepqs:
       - uses: actions/labeler@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
@@ -25,6 +23,10 @@ jobs:
     needs: triage
     runs-on: ubuntu-latest
     steps:
+      - auto-label
+        uses: actions/labeler@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: automerge
         uses: "pascalgn/automerge-action@135f0bdb927d9807b5446f7ca9ecc2c51de03c4a"
         env:
