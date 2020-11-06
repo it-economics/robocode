@@ -14,32 +14,45 @@ import robocode.ScannedRobotEvent;
 
 import java.awt.Color;
 
+import java.util.*;
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 public class BADEVILBOT extends Robot {
 
+	protected static ArrayList<?> listofreports= new ArrayList<>();
 	public Integer Dist = Integer.valueOf("50"); // distance to move when we're hit
+	public boolean hitByBullet = false;
 
 	/**
-	 * run:  Fire's main run function
+	 * run:  Fire's main run function. BAM!
 	 */
 	public void run() {
-		// Set colors
-		setBodyColor(Color.black);
-		setGunColor(Color.black);
-		setRadarColor(Color.black);
-		setBulletColor(Color.red);
 
 		// Spin the gun around slowly... forever
-		while (true) {
-			turnGunLeft(90);
-			turnGunRight(90);
+		while (true && hitByBullet) {
+			if (Dist < 60.0) {
+				turnGunLeft(90);
+				turnGunRight(90);
+				ahead(50);
+			}
+
+			// Set colors
+			setBodyColor(Color.black);
+			setGunColor(Color.black);
+			setRadarColor(Color.black);
 		}
+	}
+
+	public int bulletColor(Integer i) {
+		if (Dist < i) return -1;
+		if (Dist== i) return 0;
+		return 1;
 	}
 
 	/**
 	 * onScannedRobot:  Fire!
 	 */
+	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// If the other robot is close by, and we have plenty of life,
 		// fire hard! BAM!
@@ -62,14 +75,17 @@ public class BADEVILBOT extends Robot {
 	/**
 	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
 	 */
+	@Override
 	public void onHitByBullet(HitByBulletEvent e) {
-		turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
-
+		//turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
+		hitByBullet = true;
 		ahead(Dist);
-		Dist *= -1;
 		scan();
 
-		throw new Error("Help! I am hit!");
+		//add damage report
+		listofreports = new ArrayList<>(listofreports);
+
+//		throw new Error("Help! I am hit!");
 	}
 
 	/**
@@ -80,5 +96,8 @@ public class BADEVILBOT extends Robot {
 
 		turnGunRight(turnGunAmt);
 		fire(3);
+		byte number = (byte) listofreports.stream().map(Object::toString).count();
+		System.out.println("YOu have been hit " + number + " times so far");
 	}
+
 }
