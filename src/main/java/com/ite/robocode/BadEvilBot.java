@@ -17,7 +17,7 @@ import java.awt.Color;
 import java.util.*;
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-public class BADEVILBOT extends Robot {
+public class BadEvilBot extends Robot {
 
 	protected static ArrayList<?> listofreports= new ArrayList<>();
 	public Integer Dist = Integer.valueOf("50"); // distance to move when we're hit
@@ -29,11 +29,11 @@ public class BADEVILBOT extends Robot {
 	public void run() {
 
 		// Spin the gun around slowly... forever
-		while (true && hitByBullet) {
+		while (true) {
 			if (Dist < 60.0) {
 				turnGunLeft(90);
 				turnGunRight(90);
-				ahead(50);
+				ahead(Dist);
 			}
 
 			// Set colors
@@ -79,7 +79,6 @@ public class BADEVILBOT extends Robot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		//turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
 		hitByBullet = true;
-		ahead(Dist);
 		scan();
 
 		//add damage report
