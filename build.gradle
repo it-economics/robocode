@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    implementation files('libs/*')
+    implementation files('libs/')
 }
 
 task copybin(type: Copy) {
