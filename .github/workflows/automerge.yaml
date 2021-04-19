@@ -29,6 +29,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   compile:
     runs-on: ubuntu-latest
+    needs: rebase
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
@@ -39,12 +40,14 @@ jobs:
         run: ./gradlew build
   triage:
     runs-on: ubuntu-latest
+    needs: compile
     steps:
       - uses: actions/labeler@v2
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
   automerge:
     runs-on: ubuntu-latest
+    needs: triage
     steps:
       - name: automerge
         uses: "pascalgn/automerge-action@v0.13.1"
