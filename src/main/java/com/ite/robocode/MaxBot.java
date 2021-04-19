@@ -33,7 +33,7 @@ public class MaxBot extends Robot {
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			turnGunRight(8);
+			turnGunRight(10);
 		}
 	}
 
