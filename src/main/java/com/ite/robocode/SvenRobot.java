@@ -66,3 +66,4 @@ public class SvenRobot extends robocode.Robot {
 		scan();
 	}
 }
+
