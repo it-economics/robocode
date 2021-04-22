@@ -7,50 +7,78 @@
  */
 package com.ite.robocode;
 
-import robocode.HitByBulletEvent;
-import robocode.HitRobotEvent;
+import robocode.*;
 import robocode.Robot;
-import robocode.ScannedRobotEvent;
 
 import java.awt.*;
 
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 public class MaxBot extends Robot {
-	int dist = 50; // distance to move when we're hit
+	int dist = 35; // distance to move when we're hit
 
 	/**
 	 * run:  Fire's main run function
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(Color.black);
+		setBodyColor(Color.red);
 		setGunColor(Color.black);
-		setRadarColor(Color.black);
+		setRadarColor(Color.red);
 
 
-		setBulletColor(Color.red);
+		setBulletColor(Color.yellow);
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			turnGunRight(10);
+			turnGunRight(12);
 		}
 	}
 
 	/**
 	 * onScannedRobot:  Fire!
 	 */
-	public void onScannedRobot(ScannedRobotEvent e) {
-		// If the other robot is close by, and we have plenty of life,
-		// fire hard!
-		if (e.getDistance() < 50 && getEnergy() > 50) {
-			fire(3);
-		} // otherwise, fire 1.
-		else {
-			fire(1);
-		}
+	public void onScannedRobot(robocode.ScannedRobotEvent e) {
+		double distancePoints = getDistancePoints(e.getDistance());
+		double ownEnergyPoints = getEnergyPoints(getEnergy());
+		double velocityFactor = e.getVelocity() <= 0.5 * Rules.MAX_VELOCITY ? 1 : 0;
+		double enemyEnergyFactor = e.getEnergy() < getEnergy() && e.getEnergy() < 25 ? 1.5 : 1;
+		double power = Math.max(0, (distancePoints + ownEnergyPoints)) * velocityFactor * enemyEnergyFactor;
+
+
+		fire(power);
+
 		// Call scan again, before we turn the gun
 		scan();
+	}
+
+	private double getEnergyPoints(double energy) {
+		double energyPoints;
+		if(energy < 10) {
+			energyPoints = -1;
+		} else if (energy < 50) {
+			energyPoints = 0;
+		} else if (energy < 75) {
+			energyPoints = 1;
+		} else {
+			energyPoints = 2;
+		}
+
+		return energyPoints;
+	}
+	private double getDistancePoints(double distance) {
+		double distancePoints;
+		if(distance < 20) {
+			distancePoints = 5;
+		} else if(distance < 50) {
+			distancePoints = 4;
+		} else if(distance < 100) {
+			distancePoints = 2;
+		} else {
+			distancePoints = 1;
+		}
+
+		return distancePoints;
 	}
 
 	/**
@@ -70,7 +98,9 @@ public class MaxBot extends Robot {
 	public void onHitRobot(HitRobotEvent e) {
 		double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
 
+		double enemyEnergyFactor = e.getEnergy() < getEnergy() && e.getEnergy() < 25 ? 5 : 1;
+
 		turnGunRight(turnGunAmt);
-		fire(3);
+		fire(enemyEnergyFactor);
 	}
 }
