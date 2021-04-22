@@ -7,11 +7,14 @@
  */
 package com.ite.robocode;
 
-import robocode.HitWallEvent;
+import robocode.Robot;
+import robocode.*;
+
+import java.awt.*;
 
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-public class SvenRobot extends robocode.Robot {
+public class Botfather1 extends Robot {
 	int dist = 50; // distance to move when we're hit
 
 	/**
@@ -19,35 +22,32 @@ public class SvenRobot extends robocode.Robot {
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(java.awt.Color.YELLOW);
-		setGunColor(java.awt.Color.BLACK);
-		setRadarColor(java.awt.Color.BLACK);
-		setScanColor(java.awt.Color.BLUE);
-		setBulletColor(java.awt.Color.GRAY);
+		setBodyColor(Color.black);
+		setGunColor(Color.black);
+		setRadarColor(Color.black);
+
+
+		setBulletColor(Color.red);
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			ahead(50);
-			turnGunRight(360);
+			turnGunRight(30);
+			ahead(20);
+			turnRight(10);
 		}
-	}
-
-	public void onHitWall(HitWallEvent event) {
-		turnRight(90);
-		ahead(90);
 	}
 
 	/**
 	 * onScannedRobot:  Fire!
 	 */
-	public void onScannedRobot(robocode.ScannedRobotEvent e) {
+	public void onScannedRobot(ScannedRobotEvent e) {
 		// If the other robot is close by, and we have plenty of life,
 		// fire hard!
-		if (e.getDistance() < 150) {
+		if (e.getDistance() < 50 && getEnergy() > 50) {
 			fire(3);
 		} // otherwise, fire 1.
 		else {
-			fire(2);
+			fire(1);
 		}
 		// Call scan again, before we turn the gun
 		scan();
@@ -56,20 +56,28 @@ public class SvenRobot extends robocode.Robot {
 	/**
 	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
 	 */
-	public void onHitByBullet(robocode.HitByBulletEvent e) {
-		turnRight(e.getBearingRadians() + getHeading() - getGunHeading());
-		ahead(100);
+	public void onHitByBullet(HitByBulletEvent e) {
+		turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
+
+		ahead(dist);
+		dist *= -1;
 		scan();
 	}
 
 	/**
 	 * onHitRobot:  Aim at it.  Fire Hard!
 	 */
-	public void onHitRobot(robocode.HitRobotEvent e) {
+	public void onHitRobot(HitRobotEvent e) {
 		double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
 
 		turnGunRight(turnGunAmt);
-		fire(2);
-		scan();
+		fire(3);
 	}
+
+	@Override
+	public void onHitWall(HitWallEvent event) {
+		turnRight(80);
+		ahead(10);
+	}
+
 }
