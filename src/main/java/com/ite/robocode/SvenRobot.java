@@ -12,64 +12,81 @@ import robocode.HitWallEvent;
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 public class SvenRobot extends robocode.Robot {
-	int dist = 50; // distance to move when we're hit
+    int dist = 50; // distance to move when we're hit
 
-	/**
-	 * run:  Fire's main run function
-	 */
-	public void run() {
-		// Set colors
-		setBodyColor(java.awt.Color.YELLOW);
-		setGunColor(java.awt.Color.BLACK);
-		setRadarColor(java.awt.Color.BLACK);
-		setScanColor(java.awt.Color.BLUE);
-		setBulletColor(java.awt.Color.GRAY);
+    /**
+     * run:  Fire's main run function
+     */
+    public void run() {
+        // Set colors
+        setBodyColor(java.awt.Color.YELLOW);
+        setGunColor(java.awt.Color.BLACK);
+        setRadarColor(java.awt.Color.BLACK);
+        setScanColor(java.awt.Color.BLUE);
+        setBulletColor(java.awt.Color.GRAY);
 
-		// Spin the gun around slowly... forever
-		while (true) {
-			ahead(50);
-			turnGunRight(360);
-		}
-	}
+        // Spin the gun around slowly... forever
+        while (true) {
+            if (getOthers() > 3) {
+                ahead(50);
+                turnRight(30);
+            } else {
+                ahead(50);
+                turnGunRight(360);
+            }
+        }
+    }
 
-	public void onHitWall(HitWallEvent event) {
-		turnRight(90);
-		ahead(90);
-	}
+    public void onHitWall(HitWallEvent event) {
+        turnRight(90);
+        ahead(90);
+    }
 
-	/**
-	 * onScannedRobot:  Fire!
-	 */
-	public void onScannedRobot(robocode.ScannedRobotEvent e) {
-		// If the other robot is close by, and we have plenty of life,
-		// fire hard!
-		if (e.getDistance() < 150) {
-			fire(3);
-		} // otherwise, fire 1.
-		else {
-			fire(2);
-		}
-		// Call scan again, before we turn the gun
-		scan();
-	}
+    /**
+     * onScannedRobot:  Fire!
+     */
+    public void onScannedRobot(robocode.ScannedRobotEvent e) {
+        // If the other robot is close by, and we have plenty of life,
+        // fire hard!
+        if (e.getDistance() < 150) {
+            fire(3);
+        } // otherwise, fire 1.
+        else {
+            fire(2);
+        }
+        // Call scan again, before we turn the gun
+        scan();
+    }
 
-	/**
-	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
-	 */
-	public void onHitByBullet(robocode.HitByBulletEvent e) {
-		turnRight(e.getBearingRadians() + getHeading() - getGunHeading());
-		ahead(100);
-		scan();
-	}
+    /**
+     * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
+     */
+    public void onHitByBullet(robocode.HitByBulletEvent e) {
+        turnRight(e.getBearingRadians() + getHeading() - getGunHeading() - 30);
 
-	/**
-	 * onHitRobot:  Aim at it.  Fire Hard!
-	 */
-	public void onHitRobot(robocode.HitRobotEvent e) {
-		double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
+        if (Math.abs(e.getBullet().getX() - getX()) > 5) {
+            turnRight(50);
+            ahead(80);
+        } else if(Math.abs(e.getBullet().getY() - getY()) > 5) {
+            turnRight(50);
+            ahead(80);
+        }
 
-		turnGunRight(turnGunAmt);
-		fire(2);
-		scan();
-	}
+        scan();
+    }
+
+    /**
+     * onHitRobot:  Aim at it.  Fire Hard!
+     */
+    public void onHitRobot(robocode.HitRobotEvent e) {
+        double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
+
+        turnGunRight(turnGunAmt);
+        if (getEnergy() >= 50) {
+            fire(3);
+        } else {
+            fire(2);
+        }
+        scan();
+    }
 }
