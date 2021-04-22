@@ -7,6 +7,8 @@
  */
 package com.ite.robocode;
 
+import robocode.HitWallEvent;
+
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 public class SvenRobot extends robocode.Robot {
@@ -25,8 +27,14 @@ public class SvenRobot extends robocode.Robot {
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			turnGunRight(20);
+			ahead(50);
+			turnGunRight(360);
 		}
+	}
+
+	public void onHitWall(HitWallEvent event) {
+		turnRight(90);
+		ahead(90);
 	}
 
 	/**
@@ -49,9 +57,8 @@ public class SvenRobot extends robocode.Robot {
 	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
 	 */
 	public void onHitByBullet(robocode.HitByBulletEvent e) {
-		turnRight(70);
-		ahead(200);
-		turnLeft(70);
+		turnRight(e.getBearingRadians() + getHeading() - getGunHeading());
+		ahead(100);
 		scan();
 	}
 
