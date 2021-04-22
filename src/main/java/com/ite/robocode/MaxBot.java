@@ -32,7 +32,7 @@ public class MaxBot extends Robot {
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			turnGunRight(12);
+			turnGunRight(15);
 		}
 	}
 
@@ -42,8 +42,8 @@ public class MaxBot extends Robot {
 	public void onScannedRobot(robocode.ScannedRobotEvent e) {
 		double distancePoints = getDistancePoints(e.getDistance());
 		double ownEnergyPoints = getEnergyPoints(getEnergy());
-		double velocityFactor = e.getVelocity() <= 0.5 * Rules.MAX_VELOCITY ? 1 : 0;
-		double enemyEnergyFactor = e.getEnergy() < getEnergy() && e.getEnergy() < 25 ? 1.5 : 1;
+		double velocityFactor = e.getVelocity() <= 0.3 * Rules.MAX_VELOCITY ? 1 : 0;
+		double enemyEnergyFactor = e.getEnergy() < getEnergy() && e.getEnergy() < 20 ? 2 : 1;
 		double power = Math.max(0, (distancePoints + ownEnergyPoints)) * velocityFactor * enemyEnergyFactor;
 
 		if(getGunHeat() > 0) {
@@ -65,21 +65,22 @@ public class MaxBot extends Robot {
 		} else if (energy < 75) {
 			energyPoints = 1;
 		} else {
-			energyPoints = 2;
+			energyPoints = 3;
 		}
 
 		return energyPoints;
 	}
+
 	private double getDistancePoints(double distance) {
 		double distancePoints;
 		if(distance < 20) {
-			distancePoints = 5;
+			distancePoints = 8;
 		} else if(distance < 50) {
-			distancePoints = 4;
+			distancePoints = 6;
 		} else if(distance < 100) {
-			distancePoints = 2;
+			distancePoints = 4;
 		} else {
-			distancePoints = 1;
+			distancePoints = 2;
 		}
 
 		return distancePoints;
