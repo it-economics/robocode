@@ -22,18 +22,22 @@ public class Botfather1 extends Robot {
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(Color.black);
-		setGunColor(Color.black);
-		setRadarColor(Color.black);
+		setBodyColor(Color.white);
+		setGunColor(Color.red);
+		setRadarColor(Color.blue);
 
 
 		setBulletColor(Color.red);
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			turnGunRight(30);
-			ahead(20);
-			turnRight(10);
+			if (getOthers() < 2) {
+				turnGunRight(180);
+				ahead(dist);
+				turnRight(40);
+			} else {
+				turnGunRight(90);
+			}
 		}
 	}
 
