@@ -62,13 +62,10 @@ public class SvenRobot extends robocode.Robot {
      * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-        turnRight(e.getBearingRadians() + getHeading() - getGunHeading() - 30);
-
-        if (Math.abs(e.getBullet().getX() - getX()) > 5) {
-            turnRight(50);
+        if ( 80 < (e.getBearing() - getHeading()) && (e.getBearing() - getHeading()) <= 100 ) {
             ahead(80);
-        } else if(Math.abs(e.getBullet().getY() - getY()) > 5) {
-            turnRight(50);
+        } else {
+            turnRight(40);
             ahead(80);
         }
 
