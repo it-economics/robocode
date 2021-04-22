@@ -11,10 +11,10 @@ import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 
 public class AenisBot extends Robot{
-    int dist = 400; // distance to move when we're hit
+    int dist = 20; // distance to move when we're hit
     public void run() {
         // Set colors
-        setBodyColor(Color.black);
+        setBodyColor(Color.green);
         setGunColor(Color.black);
         setRadarColor(Color.black);
 
@@ -35,10 +35,12 @@ public class AenisBot extends Robot{
         // If the other robot is close by, and we have plenty of life,
         // fire hard!
         if (e.getDistance() < 100 && getEnergy() > 50) {
-            fire(25);
+            fire(30);
         } // otherwise, fire 1.
         else {
             fire(10);
+            ahead(400);
+            turnRight(40);
         }
         // Call scan again, before we turn the gun
         scan();
@@ -48,7 +50,7 @@ public class AenisBot extends Robot{
      * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
      */
     public void onHitByBullet(HitByBulletEvent e) {
-        turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
+        turnRight(normalRelativeAngleDegrees((90 - getHeading() - e.getHeading())));
 
         ahead(dist);
         dist *= -1;
