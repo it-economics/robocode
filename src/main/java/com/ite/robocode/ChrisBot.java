@@ -7,37 +7,43 @@
  */
 package com.ite.robocode;
 
-import robocode.Robot;
-import robocode.*;
-
-import java.awt.*;
-
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-public class Botfather1 extends Robot {
-	int dist = 50; // distance to move when we're hit
+import java.awt.Color;
+
+import robocode.HitByBulletEvent;
+import robocode.HitRobotEvent;
+import robocode.Robot;
+import robocode.ScannedRobotEvent;
+
+public class ChrisBot extends Robot {
+	int dist = 100; // distance to move when we're hit
 
 	/**
 	 * run:  Fire's main run function
 	 */
 	public void run() {
 		// Set colors
-		setBodyColor(Color.white);
+		setBodyColor(Color.red);
 		setGunColor(Color.red);
-		setRadarColor(Color.blue);
+		setRadarColor(Color.red);
 
-
-		setBulletColor(Color.red);
+		setBulletColor(Color.lightGray);
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			if (getOthers() < 2) {
-				turnGunRight(180);
-				ahead(dist);
-				turnRight(40);
+			double action = Math.random();
+			if(action > 0.75) {
+				turnRight( Math.random() * 500);
+			} else if (action > 0.5) {
+				turnLeft(Math.random() * 500);
+			} else if(action > 0.25) {
+				ahead(Math.random() * 500);
 			} else {
-				turnGunRight(90);
+				back(Math.random() * 500);
 			}
+			// Repeat.
+			turnGunRight(10);
 		}
 	}
 
@@ -47,11 +53,11 @@ public class Botfather1 extends Robot {
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// If the other robot is close by, and we have plenty of life,
 		// fire hard!
-		if (e.getDistance() < 50 && getEnergy() > 50) {
-			fire(3);
+		if (e.getDistance() < 30 && getEnergy() > 75) {
+			fire(5);
 		} // otherwise, fire 1.
 		else {
-			fire(1);
+			fire(2);
 		}
 		// Call scan again, before we turn the gun
 		scan();
@@ -75,13 +81,6 @@ public class Botfather1 extends Robot {
 		double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
 
 		turnGunRight(turnGunAmt);
-		fire(3);
+		fire(1);
 	}
-
-	@Override
-	public void onHitWall(HitWallEvent event) {
-		turnRight(80);
-		ahead(10);
-	}
-
 }

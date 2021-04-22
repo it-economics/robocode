@@ -36,7 +36,7 @@ public class AenisBot extends Robot{
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         // If the other robot is close by, and we have plenty of life,
-        // fire hard
+
         if (e.getDistance() < 50 && getEnergy() > 51) {
             fire(50);
         } // otherwise, fire 1.
@@ -62,6 +62,7 @@ public class AenisBot extends Robot{
      * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
      */
     public void onHitByBullet(HitByBulletEvent e) {
+
 
         ahead(dist);
         dist *= -1;

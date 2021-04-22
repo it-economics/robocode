@@ -11,11 +11,12 @@ import robocode.*;
 import robocode.Robot;
 
 import java.awt.*;
+import java.util.Random;
 
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 public class MaxBot extends Robot {
-	int dist = 35; // distance to move when we're hit
+	private Random random = new Random();
 
 	/**
 	 * run:  Fire's main run function
@@ -31,7 +32,7 @@ public class MaxBot extends Robot {
 
 		// Spin the gun around slowly... forever
 		while (true) {
-			turnGunRight(12);
+			turnGunRight(15);
 		}
 	}
 
@@ -41,12 +42,15 @@ public class MaxBot extends Robot {
 	public void onScannedRobot(robocode.ScannedRobotEvent e) {
 		double distancePoints = getDistancePoints(e.getDistance());
 		double ownEnergyPoints = getEnergyPoints(getEnergy());
-		double velocityFactor = e.getVelocity() <= 0.5 * Rules.MAX_VELOCITY ? 1 : 0;
-		double enemyEnergyFactor = e.getEnergy() < getEnergy() && e.getEnergy() < 25 ? 1.5 : 1;
+		double velocityFactor = e.getVelocity() <= 0.3 * Rules.MAX_VELOCITY ? 1 : 0;
+		double enemyEnergyFactor = e.getEnergy() < getEnergy() && e.getEnergy() < 20 ? 2 : 1;
 		double power = Math.max(0, (distancePoints + ownEnergyPoints)) * velocityFactor * enemyEnergyFactor;
 
-
-		fire(power);
+		if(getGunHeat() > 0) {
+			back(random.nextInt(10));
+		} else {
+			fire(power);
+		}
 
 		// Call scan again, before we turn the gun
 		scan();
@@ -61,21 +65,22 @@ public class MaxBot extends Robot {
 		} else if (energy < 75) {
 			energyPoints = 1;
 		} else {
-			energyPoints = 2;
+			energyPoints = 3;
 		}
 
 		return energyPoints;
 	}
+
 	private double getDistancePoints(double distance) {
 		double distancePoints;
 		if(distance < 20) {
-			distancePoints = 5;
+			distancePoints = 8;
 		} else if(distance < 50) {
-			distancePoints = 4;
+			distancePoints = 6;
 		} else if(distance < 100) {
-			distancePoints = 2;
+			distancePoints = 4;
 		} else {
-			distancePoints = 1;
+			distancePoints = 2;
 		}
 
 		return distancePoints;
@@ -87,8 +92,7 @@ public class MaxBot extends Robot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
 
-		ahead(dist);
-		dist *= -1;
+		back(random.nextInt(100));
 		scan();
 	}
 
@@ -96,11 +100,15 @@ public class MaxBot extends Robot {
 	 * onHitRobot:  Aim at it.  Fire Hard!
 	 */
 	public void onHitRobot(HitRobotEvent e) {
-		double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
+		if (e.getBearing() > -90 && e.getBearing() <= 90) {
+			back(random.nextInt(100));
+		} else {
+			ahead(random.nextInt(100));
+		}
+	}
 
-		double enemyEnergyFactor = e.getEnergy() < getEnergy() && e.getEnergy() < 25 ? 5 : 1;
-
-		turnGunRight(turnGunAmt);
-		fire(enemyEnergyFactor);
+	@Override
+	public void onDeath(DeathEvent event) {
+		System.out.println("Noooooooo!!!");
 	}
 }

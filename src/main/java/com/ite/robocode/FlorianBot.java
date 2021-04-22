@@ -74,14 +74,16 @@ public class FlorianBot extends Robot {
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         // If the other robot is close by, and we have plenty of life,
-        // fire hard!
-        goAhead = 0;
+        turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
 
+        // fire hard!
         if (e.getDistance() < 50 && getEnergy() > 50) {
-            fire(5);
+            fire(8);
         } // otherwise, fire 1.
-        else {
-            fire(1);
+        else if (e.getDistance() < 100 && getEnergy() > 50) {
+            fire(5);
+        } else {
+            fire(3);
         }
         // Call scan again, before we turn the gun
         scan();
@@ -92,12 +94,7 @@ public class FlorianBot extends Robot {
      */
     public void onHitByBullet(HitByBulletEvent e) {
         turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
-
-        if (Utils.getRandom().nextInt() % 3 == 0) {
-            goAhead = dist;
-        } else {
-            goBack = dist;
-        }
+        goAhead = dist;
 
         dist *= -1;
         scan();
@@ -108,8 +105,6 @@ public class FlorianBot extends Robot {
      */
     public void onHitRobot(HitRobotEvent e) {
         double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
-
-        goAhead = 0;
         turnGunRight(turnGunAmt);
         fire(5);
     }
