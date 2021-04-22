@@ -9,7 +9,6 @@ package com.ite.robocode;
 
 import robocode.Robot;
 import robocode.*;
-import robocode.util.Utils;
 
 import java.awt.*;
 
@@ -18,9 +17,7 @@ import static robocode.util.Utils.normalRelativeAngleDegrees;
 public class FlorianBot extends Robot {
     private int dist = 50; // distance to move when we're hit
 
-    private int goAhead, goBack = 100;
-    private int turnRight, turnLeft = 0;
-    private int turnGun = 10;
+    private int goAhead = 20;
 
 
     /**
@@ -36,37 +33,23 @@ public class FlorianBot extends Robot {
 
 
         while (true) {
-            if (goAhead > 0) {
-                ahead(goAhead);
+            ahead(200);
+            for (int i = 0; i <= 360; i += 60) {
+                ahead(50);
+                turnGunRight(i);
+                fire(1);
             }
+            turnRight(90);
+            ahead(200);
 
-            if (goBack > 0) {
-                back(goBack);
-            }
-
-            if (turnRight > 0) {
-                turnRight(turnRight);
-                turnRight = 0;
-            }
-
-            if (turnLeft > 0) {
-                turnLeft(turnLeft);
-                turnLeft = 0;
-            }
-
-            if (turnGun > 0) {
-                turnGunRight(turnGun);
-            }
         }
     }
 
     @Override
     public void onHitWall(HitWallEvent event) {
-        if (Utils.getRandom().nextInt() % 2 == 0) {
-            turnRight = 90;
-        } else {
-            turnLeft = 90;
-        }
+        turnRight(90);
+        ahead(200);
+        turnRight(45);
     }
 
     /**
@@ -93,7 +76,7 @@ public class FlorianBot extends Robot {
      * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
      */
     public void onHitByBullet(HitByBulletEvent e) {
-        turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
+        // turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
         goAhead = dist;
 
         dist *= -1;
@@ -105,7 +88,7 @@ public class FlorianBot extends Robot {
      */
     public void onHitRobot(HitRobotEvent e) {
         double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
-        turnGunRight(turnGunAmt);
+        //turnGunRight(turnGunAmt);
         fire(5);
     }
 
