@@ -24,7 +24,10 @@ public class AenisBot extends Robot{
         // Spin the gun around slowly... forever
         while (true) {
             turnGunRight(10);
-
+            if(getOthers() > 2) {
+                turnRight(40);
+                ahead(30);
+            }
         }
     }
 
@@ -33,14 +36,23 @@ public class AenisBot extends Robot{
      */
     public void onScannedRobot(ScannedRobotEvent e) {
         // If the other robot is close by, and we have plenty of life,
-        // fire hard!
-        if (e.getDistance() < 100 && getEnergy() > 50) {
+
+        if (e.getDistance() < 50 && getEnergy() > 51) {
+            fire(50);
+        } // otherwise, fire 1.
+        else if (e.getDistance() < 100 && getEnergy() > 31) {
             fire(30);
         } // otherwise, fire 1.
         else {
-            fire(10);
-            ahead(400);
-            turnRight(40);
+            if(getOthers() > 2) {
+                fire(40);
+            }
+            else
+            {
+                fire(10);
+                turnRight(e.getBearing());
+                ahead(e.getDistance());
+            }
         }
         // Call scan again, before we turn the gun
         scan();
@@ -50,7 +62,7 @@ public class AenisBot extends Robot{
      * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
      */
     public void onHitByBullet(HitByBulletEvent e) {
-        turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
+
 
         ahead(dist);
         dist *= -1;
