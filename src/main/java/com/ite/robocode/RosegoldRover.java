@@ -9,7 +9,7 @@ package com.ite.robocode;
 
 import robocode.Robot;
 
-public class ExampleRobot extends Robot {
+public class RosegoldRover extends Robot {
 
     /**
      * run:  Fire's main run function
@@ -27,7 +27,7 @@ public class ExampleRobot extends Robot {
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
 
-        scan();
+        fireBullet(1);
     }
 
     /**
