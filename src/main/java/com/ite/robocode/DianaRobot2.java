@@ -34,7 +34,9 @@ public class DianaRobot2 extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        fire(3);
+        if (e.getDistance()> 200) {
+            ahead(e.getDistance() -200);
+        }
         fire(3);
         fire(3);
         fire(3);
