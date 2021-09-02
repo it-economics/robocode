@@ -13,6 +13,7 @@ import robocode.Robot;
 import java.awt.*;
 
 public class TeamEchoBot extends Robot {
+    int ticksSinceFight = 0; // this lock onto the target when we're in fight (per tick counts down when not hitting target)
 
     /**
      * run:  Fire's main run function
@@ -23,11 +24,23 @@ public class TeamEchoBot extends Robot {
         setRadarColor(Color.getHSBColor(0.280555556f, .97f, .36f));
 
         while (true) {
-            turnGunRight(8);
+            if (ticksSinceFight > 0) {
+                ticksSinceFight--;
+            } else {
+                turnGunRight(8);
+            }
         }
     }
 
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
+        double absoluteBearing = (getHeading() + e.getBearing());
+        if (absoluteBearing < 0) absoluteBearing = 360 - absoluteBearing;
+        double leadCorrection = (e.getHeading() - absoluteBearing) * 0.02 * e.getVelocity();
+        System.out.println("heading: " + e.getHeading());
+        System.out.println("absoluteBearing: " + absoluteBearing);
+        System.out.println("velocity: " + e.getVelocity());
+        System.out.println("Correction: " + leadCorrection);
+//        turnGunRight(leadCorrection);
         if (e.getDistance() > 300) {
             fire(strengthRampup);
             return;
@@ -39,9 +52,25 @@ public class TeamEchoBot extends Robot {
     }
 
     int strengthRampup = 1;
+
     @Override
-    public void onBulletHit(BulletHitEvent event) {
+    public void onBulletHit(BulletHitEvent e) {
+        ticksSinceFight = 10;
         strengthRampup *= 1.1;
+
+        if (e.getEnergy() > 10) {
+            double bulletHeading = e.getBullet().getHeading();
+            double diff = getHeading() - bulletHeading;
+            if (diff < 0 && diff > -180) {
+                turnRight(Math.abs(diff) + 10);
+            } else {
+                turnLeft(Math.abs(diff) + 10);
+            }
+
+            ahead(20);
+        }
+
+        scan();
     }
 
     public void onHitByBullet(robocode.HitByBulletEvent e) {
@@ -56,11 +85,11 @@ public class TeamEchoBot extends Robot {
     }
 
     public void onBulletMissed(robocode.BulletMissedEvent e) {
-
+        strengthRampup = 1;
     }
 
     public void onHitWall(robocode.HitWallEvent e) {
-        turnRight(e.getBearing() + 180);
+        turnRight(e.getBearing() + 150);
         ahead(100);
         scan();
     }
