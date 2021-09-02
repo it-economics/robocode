@@ -9,16 +9,19 @@ package com.ite.robocode;
 
 import robocode.Robot;
 
+import java.awt.*;
+
 public class RosegoldRover extends Robot {
 
     /**
      * run:  Fire's main run function
      */
     public void run() {
+        setColors(Color.PINK, Color.ORANGE, Color.ORANGE);
         fire(1);
         while (true) {
+            turnRight(2);
             ahead(5);
-            turnRight(5);
         }
     }
 
@@ -26,9 +29,12 @@ public class RosegoldRover extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-
+        
+        setBulletColor(Color.MAGENTA);
         fireBullet(1);
+        setBulletColor(Color.GREEN);
         fireBullet(1);
+        setBulletColor(Color.YELLOW);
         fireBullet(1);
     }
 
@@ -45,7 +51,7 @@ public class RosegoldRover extends Robot {
      * onHitRobot:
      */
     public void onHitRobot(robocode.HitRobotEvent e) {
-
+        
         ahead(10);
     }
 
