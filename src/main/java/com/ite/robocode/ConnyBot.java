@@ -11,6 +11,8 @@ import robocode.HitWallEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
 
+import java.awt.*;
+
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 public class ConnyBot extends Robot {
@@ -20,9 +22,14 @@ public class ConnyBot extends Robot {
      * run:  Fire's main run function
      */
     public void run() {
+        setBodyColor(Color.black);
+        setGunColor(Color.black);
+        setRadarColor(Color.black);
+        setBulletColor(Color.black);
+        setScanColor(Color.black);
         goCorner();
         while (true) {
-            ahead(10);
+            ahead(30);
             turnRadarLeft(45);
             scan();
         }
@@ -42,6 +49,7 @@ public class ConnyBot extends Robot {
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
         scan();
+        ahead(200);
     }
 
     /**
@@ -63,15 +71,16 @@ public class ConnyBot extends Robot {
     }
 
     public void distanceRelativeFire(double dist,double bearing) {
-        if (dist < 50) {
+        if (dist < 200) {
             turnGunRight(bearing);
-            fire(15);
-        } else if (dist < 100) {
+            fire(3);
+        } else if (dist < 300) {
             turnGunRight(bearing);
-            fire(10);
-        } else if (dist < 200) {
+            fire(2);
+        }
+        else if(wallReached) {
             turnGunRight(bearing);
-            fire(5);
+            fire(1);
         }
     }
 }
