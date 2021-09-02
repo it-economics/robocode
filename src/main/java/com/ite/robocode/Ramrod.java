@@ -3,19 +3,24 @@ package com.ite.robocode;
 import robocode.HitWallEvent;
 import robocode.Robot;
 
+import java.awt.*;
+
 public class Ramrod extends Robot {
 
-    boolean turn = true;
+    private boolean turn = true;
 
     /**
      * run:  Fire's main run function
      */
     public void run() {
-        fire(1);
+        setBodyColor(Color.BLUE);
+        setGunColor(Color.WHITE);
+
         while (true) {
-            ahead(5);
+//            ahead(10);
             if (turn) {
-                turnRight(5);
+//                turnRight(5);
+                turnGunRight(10);
             }
         }
     }
@@ -23,32 +28,42 @@ public class Ramrod extends Robot {
     /**
      * onScannedRobot:
      */
+    @Override
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        ahead(e.getDistance());
-        fireBullet(2);
-        turn = false;
+        if (e.getDistance() < 300) {
+            turnRight(e.getBearing());
+            ahead(e.getDistance() + 30);
+            turnGunRight(e.getBearing());
+            fireBullet(3);
+            turn = true;
+        } else {
+            ahead(20);
+        }
     }
 
     /**
      * onHitByBullet:
      */
+    @Override
     public void onHitByBullet(robocode.HitByBulletEvent e) {
         turnRight(90);
+        ahead(50);
         turn = true;
-        scan();
     }
 
     /**
      * onHitRobot:
      */
+    @Override
     public void onHitRobot(robocode.HitRobotEvent e) {
-        turnRight(180);
+        back(50);
+        turnRight(90);
         turn = true;
-        scan();
     }
 
+    @Override
     public void onHitWall(HitWallEvent event) {
-        turnRight(130);
+        turnRight(90);
     }
 
 }
