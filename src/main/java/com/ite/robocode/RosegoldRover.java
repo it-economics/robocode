@@ -28,6 +28,8 @@ public class RosegoldRover extends Robot {
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
 
         fireBullet(1);
+        fireBullet(1);
+        fireBullet(1);
     }
 
     /**
@@ -35,7 +37,8 @@ public class RosegoldRover extends Robot {
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
 
-        scan();
+        turnLeft(185);
+        ahead(10);
     }
 
     /**
@@ -43,6 +46,12 @@ public class RosegoldRover extends Robot {
      */
     public void onHitRobot(robocode.HitRobotEvent e) {
 
-        scan();
+        ahead(10);
+    }
+
+    public void onHitWall(robocode.HitWallEvent e) {
+
+        turnLeft(180);
+        ahead(10);
     }
 }
