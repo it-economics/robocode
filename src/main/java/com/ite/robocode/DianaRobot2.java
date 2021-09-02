@@ -35,6 +35,8 @@ public class DianaRobot2 extends Robot {
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
         fire(3);
+        fire(3);
+        fire(3)
         scan();
     }
 
