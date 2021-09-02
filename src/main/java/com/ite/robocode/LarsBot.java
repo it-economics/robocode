@@ -12,6 +12,8 @@ import robocode.HitRobotEvent;
 import robocode.HitWallEvent;
 import robocode.Robot;
 
+import java.awt.*;
+
 public class LarsBot extends Robot {
 
     /**
@@ -19,6 +21,10 @@ public class LarsBot extends Robot {
      */
     @Override
     public void run() {
+        setBodyColor(Color.RED);
+        setBulletColor(Color.RED);
+        setRadarColor(Color.YELLOW);
+        setGunColor(Color.BLACK);
         fire(1);
         while (true) {
             turnGunLeft(35);
