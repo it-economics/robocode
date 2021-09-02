@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.GraphicsDevice;
 
 
+import robocode.HitWallEvent;
 import robocode.Robot;
 
 public class UnserRobi extends Robot {
@@ -12,25 +13,31 @@ public class UnserRobi extends Robot {
    * run:  Fire's main run function
    */
   public void run() {
+    drive();
+    turnGunRight(90);
     while (true) {
+      drive();
       fire(1);
-      ahead(5);
-      turnRight(5);
     }
   }
 
-  /**
-   * onScannedRobot:
-   */
+  private void drive() {
+    ahead(30);
+  }
+
+  @Override
+  public void onHitWall(HitWallEvent event) {
+    turnRight(90);
+  }
+
   public void onScannedRobot(robocode.ScannedRobotEvent e) {
-    scan();
+    fire(1);
   }
 
   /**
    * onHitByBullet:
    */
   public void onHitByBullet(robocode.HitByBulletEvent e) {
-
     scan();
   }
 
@@ -38,7 +45,6 @@ public class UnserRobi extends Robot {
    * onHitRobot:
    */
   public void onHitRobot(robocode.HitRobotEvent e) {
-
     scan();
   }
 }
