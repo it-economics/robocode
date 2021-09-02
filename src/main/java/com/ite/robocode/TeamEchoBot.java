@@ -9,12 +9,18 @@ package com.ite.robocode;
 
 import robocode.Robot;
 
+import java.awt.*;
+
 public class TeamEchoBot extends Robot {
 
     /**
      * run:  Fire's main run function
      */
     public void run() {
+        setBodyColor(Color.getHSBColor(101, 97, 36));
+        setGunColor(Color.getHSBColor(101, 97, 36));
+        setRadarColor(Color.getHSBColor(101, 97, 36)); // Yeah exactly
+        setBulletColor(Color.getHSBColor(101, 97, 36));
         while (true) {
             ahead(100);
             turnRight(10);
