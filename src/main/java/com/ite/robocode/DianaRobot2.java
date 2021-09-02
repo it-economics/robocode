@@ -53,7 +53,7 @@ public class DianaRobot2 extends Robot {
      * onHitRobot:
      */
     public void onHitRobot(robocode.HitRobotEvent e) {
-        ahead(100);
+        ahead(1000);
     }
 
     public void onHitWall(HitWallEvent event) {
