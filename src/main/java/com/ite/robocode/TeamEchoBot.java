@@ -7,23 +7,19 @@
  */
 package com.ite.robocode;
 
-import robocode.BulletMissedEvent;
-import robocode.HitWallEvent;
 import robocode.Robot;
 
-public class DianaRobot extends Robot {
+public class TeamEchoBot extends Robot {
 
     /**
      * run:  Fire's main run function
      */
     public void run() {
-        while (true)
-        {   ahead(100);
-             for (int nr = 5; nr < 360; nr++) {
-                turnRight(nr);
-                scan();
-            }
+        while (true) {
             ahead(100);
+            turnRight(10);
+            ahead(100);
+            turnLeft(10);
         }
     }
 
@@ -31,7 +27,7 @@ public class DianaRobot extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        fire(20);
+        fire(1);
         scan();
     }
 
@@ -39,21 +35,14 @@ public class DianaRobot extends Robot {
      * onHitByBullet:
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-        turnLeft(45);
-        ahead(15);
+        turnRight(45);
+        scan();
     }
 
     /**
      * onHitRobot:
      */
     public void onHitRobot(robocode.HitRobotEvent e) {
-        ahead(100);
+        scan();
     }
-
-    public void onHitWall(HitWallEvent event) {
-        turnRight(180);
-        ahead(100);
-    }
-
-
 }
