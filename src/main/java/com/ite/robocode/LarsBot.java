@@ -18,6 +18,8 @@ public class LarsBot extends Robot {
     private static final double QUARTER_TURN = 90.0D;
     private FadingColor fadingColor;
 
+    private boolean inSight = false;
+
     /**
      * run:  Fire's main run function
      */
@@ -28,7 +30,9 @@ public class LarsBot extends Robot {
         fire(Double.MIN_VALUE);
         while (true) {
             setRainbowColor();
-            turnGunRight(9);
+            if (!inSight) {
+                turnGunRight(11);
+            }
             scan();
         }
     }
@@ -55,8 +59,13 @@ public class LarsBot extends Robot {
             turnLeft(15);
             turnGunRight(15);
             ahead(15);
+            scan();
         } else {
-            fireMultipleTimes(3, 3);
+            if (scan.getDistance() < 35) {
+                fireMultipleTimes(3, 5);
+            } else {
+                fireMultipleTimes(1, 4);
+            }
             scan();
         }
     }
@@ -101,9 +110,11 @@ public class LarsBot extends Robot {
 
     @Override
     public void onBulletHit(BulletHitEvent hit) {
+        inSight = true;
         setRainbowColor();
         setBodyColor(Color.YELLOW);
         fireMultipleTimes(3, 5);
+        scan();
     }
 
     private void fireMultipleTimes(double power, int amount) {
@@ -114,6 +125,7 @@ public class LarsBot extends Robot {
 
     @Override
     public void onBulletMissed(BulletMissedEvent event) {
+        inSight = false;
         scan();
     }
 
