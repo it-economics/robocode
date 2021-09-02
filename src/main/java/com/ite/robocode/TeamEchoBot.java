@@ -7,6 +7,7 @@
  */
 package com.ite.robocode;
 
+import robocode.BulletHitEvent;
 import robocode.Robot;
 
 import java.awt.*;
@@ -17,38 +18,50 @@ public class TeamEchoBot extends Robot {
      * run:  Fire's main run function
      */
     public void run() {
-        setBodyColor(Color.getHSBColor(101, 97, 36));
-        setGunColor(Color.getHSBColor(101, 97, 36));
-        setRadarColor(Color.getHSBColor(101, 97, 36)); // Yeah exactly
-        setBulletColor(Color.getHSBColor(101, 97, 36));
+        setBodyColor(Color.getHSBColor(0.280555556f, .97f, .36f));
+        setGunColor(Color.getHSBColor(0.280555556f, .97f, .36f));
+        setRadarColor(Color.getHSBColor(0.280555556f, .97f, .36f));
+
         while (true) {
-            ahead(100);
-            turnRight(10);
-            ahead(100);
-            turnLeft(10);
+            turnGunRight(8);
         }
     }
 
-    /**
-     * onScannedRobot:
-     */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        fire(1);
+        if (e.getDistance() > 300) {
+            fire(strengthRampup);
+            return;
+        }
+        int headingBonus = e.getHeading() == getGunHeading() ? 10 : 0;
+        int rangeBonus = e.getDistance() < 30 ? 5 : 0;
+        fire(2 + rangeBonus + headingBonus + strengthRampup);
         scan();
     }
 
-    /**
-     * onHitByBullet:
-     */
+    int strengthRampup = 1;
+    @Override
+    public void onBulletHit(BulletHitEvent event) {
+        strengthRampup *= 1.1;
+    }
+
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-        turnRight(45);
+        strengthRampup = 1;
+        turnRight(e.getBearing() + 90);
+        ahead(200);
         scan();
     }
 
-    /**
-     * onHitRobot:
-     */
     public void onHitRobot(robocode.HitRobotEvent e) {
+        scan();
+    }
+
+    public void onBulletMissed(robocode.BulletMissedEvent e) {
+
+    }
+
+    public void onHitWall(robocode.HitWallEvent e) {
+        turnRight(e.getBearing() + 180);
+        ahead(100);
         scan();
     }
 }

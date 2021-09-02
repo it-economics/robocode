@@ -16,31 +16,25 @@ import java.util.Random;
 
 public class LarsBot extends Robot {
     private static final double QUARTER_TURN = 90.0D;
+    private FadingColor fadingColor;
 
     /**
      * run:  Fire's main run function
      */
     @Override
     public void run() {
-        setBodyColor(Color.RED);
-        setBulletColor(Color.RED);
-        setRadarColor(Color.YELLOW);
-        setGunColor(Color.BLACK);
+        fadingColor = FadingColor.create();
+        setRainbowColor();
         fire(Double.MIN_VALUE);
         while (true) {
-            setRandomColor();
-            fire(Double.MIN_VALUE);
-            turnGunRight(5);
+            setRainbowColor();
+            turnGunRight(9);
             scan();
         }
     }
 
-    private void setRandomColor() {
-        Random random = new Random();
-        float r = random.nextFloat();
-        float g = random.nextFloat();
-        float b = random.nextFloat();
-        Color color = new Color(r, g, b);
+    private void setRainbowColor() {
+        Color color = fadingColor.nextColor();
         setBodyColor(color);
         setRadarColor(color);
         setGunColor(color);
@@ -52,17 +46,17 @@ public class LarsBot extends Robot {
      */
     @Override
     public void onScannedRobot(robocode.ScannedRobotEvent scan) {
-        setRandomColor();
+        setRainbowColor();
         if (scan.getVelocity() > 10) {
             // Don't waste energy on bullets that won't actually hit.
             return;
         }
         if (getGunHeat() > 20) {
-            turnLeft(20);
-            turnGunRight(20);
-            ahead(5);
+            turnLeft(15);
+            turnGunRight(15);
+            ahead(15);
         } else {
-            fireMultipleTimes(70, 2);
+            fireMultipleTimes(3, 3);
             scan();
         }
     }
@@ -72,11 +66,11 @@ public class LarsBot extends Robot {
      */
     @Override
     public void onHitByBullet(robocode.HitByBulletEvent hit) {
-        setRandomColor();
+        setRainbowColor();
         double degrees = Utils.normalRelativeAngleDegrees(QUARTER_TURN - (getHeading() - hit.getHeading()));
         // try to escape
         turnLeft(degrees);
-        ahead(20);
+        ahead(50);
         // revenge
         fire(0.1);
         turnGunRight(degrees);
@@ -86,29 +80,30 @@ public class LarsBot extends Robot {
 
     @Override
     public void onHitWall(HitWallEvent collision) {
-        setRandomColor();
+        setRainbowColor();
         turnLeft(QUARTER_TURN);
-        ahead(10);
+        ahead(45);
         turnGunRight(QUARTER_TURN + 10);
         scan();
     }
 
     @Override
-    public void onHitRobot(HitRobotEvent event) {
-        back(20);
+    public void onHitRobot(HitRobotEvent collision) {
+        back(46);
+        fireMultipleTimes(3, 3);
         scan();
     }
 
     @Override
     public void onStatus(StatusEvent e) {
-        setRandomColor();
+        setRainbowColor();
     }
 
     @Override
     public void onBulletHit(BulletHitEvent hit) {
-        setRandomColor();
+        setRainbowColor();
         setBodyColor(Color.YELLOW);
-        fireMultipleTimes(50, 5);
+        fireMultipleTimes(3, 5);
     }
 
     private void fireMultipleTimes(double power, int amount) {
@@ -120,5 +115,43 @@ public class LarsBot extends Robot {
     @Override
     public void onBulletMissed(BulletMissedEvent event) {
         scan();
+    }
+
+    private static final class FadingColor {
+        private int red = 255;
+        private int green = 0;
+        private int blue = 0;
+
+        private FadingColor() {}
+
+        private void nextRGB() {
+            if (red == 255 && green < 255 && blue == 0) {
+                green++;
+            }
+            if (green == 255 && red > 0 && blue == 0) {
+                red--;
+            }
+            if (green == 255 && blue < 255 && red == 0) {
+                blue++;
+            }
+            if (blue == 255 && green > 0 && red == 0) {
+                green--;
+            }
+            if (blue == 255 && red < 255 && green == 0) {
+                red++;
+            }
+            if (red == 255 && blue > 0 && green == 0) {
+                blue--;
+            }
+        }
+
+        public Color nextColor() {
+            nextRGB();
+            return new Color(red, green, blue);
+        }
+
+        public static FadingColor create() {
+            return new FadingColor();
+        }
     }
 }

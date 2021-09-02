@@ -15,15 +15,19 @@ public class UnserRobi extends Robot {
    */
   public void run() {
 
+
     setBodyColor((Color.PINK));
     setGunColor((Color.MAGENTA));
     setRadarColor((Color.WHITE));
     setBulletColor((Color.CYAN));
+
     drive();
     while (true) {
       turnGunRight(getHeading() - getGunHeading() + 90);
       drive();
+
       fire(getEnergy() * 0.1);
+
     }
   }
 
