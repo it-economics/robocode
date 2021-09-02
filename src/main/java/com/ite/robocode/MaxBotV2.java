@@ -52,6 +52,7 @@ public class MaxBotV2 extends Robot {
             back(10);
         }
 
+        ahead(5);
         scan();
     }
 

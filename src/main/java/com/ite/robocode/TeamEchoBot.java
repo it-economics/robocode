@@ -9,16 +9,23 @@ package com.ite.robocode;
 
 import robocode.Robot;
 
-public class ExampleRobot extends Robot {
+import java.awt.*;
+
+public class TeamEchoBot extends Robot {
 
     /**
      * run:  Fire's main run function
      */
     public void run() {
-        fire(1);
+        setBodyColor(Color.getHSBColor(101, 97, 36));
+        setGunColor(Color.getHSBColor(101, 97, 36));
+        setRadarColor(Color.getHSBColor(101, 97, 36)); // Yeah exactly
+        setBulletColor(Color.getHSBColor(101, 97, 36));
         while (true) {
-            ahead(5);
-            turnRight(5);
+            ahead(100);
+            turnRight(10);
+            ahead(100);
+            turnLeft(10);
         }
     }
 
@@ -26,7 +33,7 @@ public class ExampleRobot extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-
+        fire(1);
         scan();
     }
 
@@ -34,7 +41,7 @@ public class ExampleRobot extends Robot {
      * onHitByBullet:
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-
+        turnRight(45);
         scan();
     }
 
@@ -42,7 +49,6 @@ public class ExampleRobot extends Robot {
      * onHitRobot:
      */
     public void onHitRobot(robocode.HitRobotEvent e) {
-
         scan();
     }
 }

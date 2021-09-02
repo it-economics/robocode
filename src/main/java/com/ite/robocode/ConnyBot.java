@@ -7,18 +7,21 @@
  */
 package com.ite.robocode;
 
+import robocode.HitWallEvent;
 import robocode.Robot;
 
-public class ExampleRobot extends Robot {
+import static robocode.util.Utils.normalRelativeAngleDegrees;
+
+public class ConnyBot extends Robot {
 
     /**
      * run:  Fire's main run function
      */
     public void run() {
-        fire(1);
+        goCorner();
         while (true) {
             ahead(5);
-            turnRight(5);
+            //turnRight(5);
         }
     }
 
@@ -44,5 +47,15 @@ public class ExampleRobot extends Robot {
     public void onHitRobot(robocode.HitRobotEvent e) {
 
         scan();
+    }
+
+    public void goCorner() {
+        double direction = getHeading();
+        double turnValue = direction % 90;
+        turnLeft(turnValue);
+    }
+
+    public void onHitWall(HitWallEvent e) {
+        turnLeft(90);
     }
 }

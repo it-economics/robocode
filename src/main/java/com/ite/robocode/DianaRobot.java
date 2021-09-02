@@ -48,4 +48,5 @@ public class DianaRobot extends Robot {
         turnRight(45);
         ahead(5);
     }
+
 }
