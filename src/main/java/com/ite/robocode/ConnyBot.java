@@ -7,25 +7,21 @@
  */
 package com.ite.robocode;
 
+import robocode.HitWallEvent;
 import robocode.Robot;
 
-import java.awt.*;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-public class TeamEchoBot extends Robot {
+public class ConnyBot extends Robot {
 
     /**
      * run:  Fire's main run function
      */
     public void run() {
-        setBodyColor(Color.getHSBColor(101, 97, 36));
-        setGunColor(Color.getHSBColor(101, 97, 36));
-        setRadarColor(Color.getHSBColor(101, 97, 36)); // Yeah exactly
-        setBulletColor(Color.getHSBColor(101, 97, 36));
+        goCorner();
         while (true) {
-            ahead(100);
-            turnRight(10);
-            ahead(100);
-            turnLeft(10);
+            ahead(5);
+            //turnRight(5);
         }
     }
 
@@ -33,7 +29,7 @@ public class TeamEchoBot extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        fire(1);
+
         scan();
     }
 
@@ -41,7 +37,7 @@ public class TeamEchoBot extends Robot {
      * onHitByBullet:
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-        turnRight(45);
+
         scan();
     }
 
@@ -49,6 +45,17 @@ public class TeamEchoBot extends Robot {
      * onHitRobot:
      */
     public void onHitRobot(robocode.HitRobotEvent e) {
+
         scan();
+    }
+
+    public void goCorner() {
+        double direction = getHeading();
+        double turnValue = direction % 90;
+        turnLeft(turnValue);
+    }
+
+    public void onHitWall(HitWallEvent e) {
+        turnLeft(90);
     }
 }

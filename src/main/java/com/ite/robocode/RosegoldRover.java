@@ -9,23 +9,16 @@ package com.ite.robocode;
 
 import robocode.Robot;
 
-import java.awt.*;
-
-public class TeamEchoBot extends Robot {
+public class RosegoldRover extends Robot {
 
     /**
      * run:  Fire's main run function
      */
     public void run() {
-        setBodyColor(Color.getHSBColor(101, 97, 36));
-        setGunColor(Color.getHSBColor(101, 97, 36));
-        setRadarColor(Color.getHSBColor(101, 97, 36)); // Yeah exactly
-        setBulletColor(Color.getHSBColor(101, 97, 36));
+        fire(1);
         while (true) {
-            ahead(100);
-            turnRight(10);
-            ahead(100);
-            turnLeft(10);
+            ahead(5);
+            turnRight(5);
         }
     }
 
@@ -33,22 +26,32 @@ public class TeamEchoBot extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        fire(1);
-        scan();
+
+        fireBullet(1);
+        fireBullet(1);
+        fireBullet(1);
     }
 
     /**
      * onHitByBullet:
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-        turnRight(45);
-        scan();
+
+        turnLeft(185);
+        ahead(10);
     }
 
     /**
      * onHitRobot:
      */
     public void onHitRobot(robocode.HitRobotEvent e) {
-        scan();
+
+        ahead(10);
+    }
+
+    public void onHitWall(robocode.HitWallEvent e) {
+
+        turnLeft(180);
+        ahead(10);
     }
 }
