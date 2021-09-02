@@ -9,6 +9,7 @@ package com.ite.robocode;
 
 import robocode.HitWallEvent;
 import robocode.Robot;
+import robocode.ScannedRobotEvent;
 
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
@@ -21,7 +22,6 @@ public class ConnyBot extends Robot {
         goCorner();
         while (true) {
             ahead(5);
-            //turnRight(5);
         }
     }
 
@@ -29,8 +29,7 @@ public class ConnyBot extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-
-        scan();
+        fire(15);
     }
 
     /**
