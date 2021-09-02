@@ -14,15 +14,20 @@ public class UnserRobi extends Robot {
    * run:  Fire's main run function
    */
   public void run() {
-    setBodyColor(Color.getHSBColor(300, 100, 100));
-    setGunColor(Color.getHSBColor(300, 100, 100));
-    setRadarColor(Color.getHSBColor(300, 100, 100));
-    setBulletColor(Color.getHSBColor(300, 100, 100));
+
+
+    setBodyColor((Color.PINK));
+    setGunColor((Color.MAGENTA));
+    setRadarColor((Color.WHITE));
+    setBulletColor((Color.CYAN));
+
     drive();
     while (true) {
       turnGunRight(getHeading() - getGunHeading() + 90);
       drive();
-      fire(5);
+
+      fire(getEnergy() * 0.1);
+
     }
   }
 
