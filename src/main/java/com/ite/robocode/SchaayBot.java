@@ -10,9 +10,12 @@ public class SchaayBot extends Robot {
      */
     public void run() {
         while (true) {
-            ahead(5);
-            turnRight(5);
-            fire(0.01);
+            ahead(15);
+            turnRight(10);
+            if(getGunHeat() < 10 && getEnergy() >= 70) {
+                fire(0.001);
+            }
+            scan();
         }
     }
 
@@ -20,17 +23,34 @@ public class SchaayBot extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        fire(5);
+        double targetEnergy = e.getEnergy();
+
+        if(targetEnergy < 20) {
+            fire(20);
+        }
+
+        if(getGunHeat() < 10) {
+            if(e.getDistance() < 15 && e.getVelocity() < 4) {
+                fire(5);
+            } else {
+                fire(1);
+            }
+        } else {
+            turnRight(15);
+            ahead(10);
+        }
         scan();
     }
+
+
 
     /**
      * onHitByBullet:
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-        fire(0.2);
-        turnLeft(30);
-        ahead(10);
+        //fire(0.2);
+        turnRight(30);
+        ahead(50);
         scan();
     }
 
@@ -38,12 +58,16 @@ public class SchaayBot extends Robot {
      * onHitRobot:
      */
     public void onHitRobot(robocode.HitRobotEvent e) {
-        ahead(5);
+        fire(5);
         scan();
     }
 
+    public void onBulletMissed(robocode.BulletMissedEvent e) {
+
+    }
+
     public void onHitWall(robocode.HitWallEvent e) {
-        turnLeft(90);
+        turnRight(90);
         ahead(10);
         scan();
     }
