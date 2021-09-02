@@ -37,6 +37,7 @@ public class DianaRobot2 extends Robot {
         fire(3);
         fire(3);
         fire(3);
+        fire(3);
         scan();
     }
 
