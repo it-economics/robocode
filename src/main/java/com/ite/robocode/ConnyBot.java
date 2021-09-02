@@ -15,6 +15,7 @@ import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 public class ConnyBot extends Robot {
 
+    boolean wallReached = false;
     /**
      * run:  Fire's main run function
      */
@@ -54,6 +55,7 @@ public class ConnyBot extends Robot {
         double direction = getHeading();
         double turnValue = direction % 90;
         turnLeft(turnValue);
+        wallReached = true;
     }
 
     public void onHitWall(HitWallEvent e) {
