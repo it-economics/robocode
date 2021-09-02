@@ -11,12 +11,15 @@ import robocode.BulletMissedEvent;
 import robocode.HitWallEvent;
 import robocode.Robot;
 
-public class DianaRobot extends Robot {
+import java.awt.*;
+
+public class DianaRobot2 extends Robot {
 
     /**
      * run:  Fire's main run function
      */
     public void run() {
+        setBodyColor(Color.CYAN);
         while (true)
         {   ahead(100);
              for (int nr = 5; nr < 360; nr++) {
@@ -31,7 +34,7 @@ public class DianaRobot extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        fire(20);
+        fire(3);
         scan();
     }
 
@@ -40,7 +43,7 @@ public class DianaRobot extends Robot {
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
         turnLeft(45);
-        ahead(15);
+        ahead(1000);
     }
 
     /**
