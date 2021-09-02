@@ -11,10 +11,12 @@ import robocode.*;
 import robocode.Robot;
 
 import java.awt.*;
+import java.util.Random;
 
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 public class MaxBotV2 extends Robot {
+    private Random random = new Random();
 
     /**
      * run:  Fire's main run function
@@ -25,89 +27,79 @@ public class MaxBotV2 extends Robot {
         setRadarColor(Color.yellow);
         setBulletColor(Color.red);
 
+        // Spin the gun around slowly... forever
         while (true) {
             turnGunRight(15);
         }
     }
 
     /**
-     * onScannedRobot:
+     * onScannedRobot:  Fire!
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        double targetEnergy = e.getEnergy();
+        double distancePoints = getDistancePoints(e.getDistance());
+        double ownEnergyPoints = getEnergyPoints(getEnergy());
+        double velocityFactor = e.getVelocity() <= 0.3 * Rules.MAX_VELOCITY ? 1 : 0;
+        double enemyEnergyFactor = e.getEnergy() < getEnergy() && e.getEnergy() < 20 ? 2 : 1;
+        double power = Math.max(0, (distancePoints + ownEnergyPoints)) * velocityFactor * enemyEnergyFactor;
 
-        if(targetEnergy < 20) {
-            fire(20);
-        }
-
-        if(getGunHeat() < 10) {
-            if(e.getDistance() < 20 && e.getVelocity() < 5) {
-                fire(getEnergy() * 0.2);
-            } else {
-                fire(getEnergy() * 0.1);
-            }
+        if(getGunHeat() > 0) {
+            back(random.nextInt(10));
         } else {
-            turnRight(15);
-            turnGunLeft(15);
-            back(10);
+            fire(power);
         }
 
-        ahead(5);
         scan();
     }
 
+    private double getEnergyPoints(double energy) {
+        double energyPoints;
+        if(energy < 10) {
+            energyPoints = -1;
+        } else if (energy < 50) {
+            energyPoints = 0;
+        } else if (energy < 75) {
+            energyPoints = 1;
+        } else {
+            energyPoints = 3;
+        }
+
+        return energyPoints;
+    }
+
+    private double getDistancePoints(double distance) {
+        double distancePoints;
+        if(distance < 20) {
+            distancePoints = 8;
+        } else if(distance < 50) {
+            distancePoints = 6;
+        } else if(distance < 100) {
+            distancePoints = 4;
+        } else {
+            distancePoints = 2;
+        }
+
+        return distancePoints;
+    }
+
     /**
-     * onHitByBullet:
+     * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
      */
     public void onHitByBullet(HitByBulletEvent e) {
-        double degrees = normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading()));
-        turnGunLeft(degrees);
-        turnRight(degrees);
-        back(10);
+        turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
+
+        back(random.nextInt(100));
         scan();
     }
 
     /**
-     * onHitRobot:
+     * onHitRobot:  Aim at it.  Fire Hard!
      */
-    public void onHitRobot(robocode.HitRobotEvent e) {
-        back(10);
-        fire(20);
-        scan();
+    public void onHitRobot(HitRobotEvent e) {
+        if (e.getBearing() > -90 && e.getBearing() <= 90) {
+            back(random.nextInt(100));
+        } else {
+            ahead(random.nextInt(100));
+        }
     }
-
-    @Override
-    public void onWin(WinEvent event) {
-        turnRight(45);
-        fire(20);
-        scan();
-    }
-
-    @Override
-    public void onBulletHit(BulletHitEvent event) {
-        super.onBulletHit(event);
-        scan();
-    }
-
-    @Override
-    public void onBulletHitBullet(BulletHitBulletEvent event) {
-        turnRight(15);
-        turnGunLeft(15);
-        back(10);
-        scan();
-    }
-
-    @Override
-    public void onHitWall(HitWallEvent event) {
-        turnRight(90);
-        turnGunLeft(90);
-        scan();
-    }
-
-    @Override
-    public void onBulletMissed(BulletMissedEvent event) {
-        super.onBulletMissed(event);
-        scan();
-    }
-
 }
