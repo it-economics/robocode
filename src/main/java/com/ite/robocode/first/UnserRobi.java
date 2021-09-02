@@ -1,21 +1,19 @@
-/**
- * Copyright (c) 2001-2019 Mathew A. Nelson and Robocode contributors All rights reserved. This
- * program and the accompanying materials are made available under the terms of the Eclipse Public
- * License v1.0 which accompanies this distribution, and is available at
- * https://robocode.sourceforge.io/license/epl-v10.html
- */
-package com.ite.robocode;
+package com.ite.robocode.first;
+
+import java.awt.AWTException;
+import java.awt.GraphicsDevice;
+
 
 import robocode.Robot;
 
-public class ExampleRobot extends Robot {
+public class UnserRobi extends Robot {
 
   /**
    * run:  Fire's main run function
    */
   public void run() {
-    fire(1);
     while (true) {
+      fire(1);
       ahead(5);
       turnRight(5);
     }
@@ -25,7 +23,6 @@ public class ExampleRobot extends Robot {
    * onScannedRobot:
    */
   public void onScannedRobot(robocode.ScannedRobotEvent e) {
-
     scan();
   }
 
