@@ -7,26 +7,24 @@
  */
 package com.ite.robocode;
 
+import java.awt.Color;
+
 import robocode.Robot;
 import robocode.Rules;
 
 public class ChrisBot2 extends Robot {
 
-	/**
-	 * run:  Fire's main run function
-	 */
 	public void run() {
+		this.setAllColors(Color.WHITE);
 		while (true) {
 			ahead(5);
-			turnRight(5);
+			turnLeft(5);
+			scan();
 		}
 	}
 
-	/**
-	 * onScannedRobot:
-	 */
 	public void onScannedRobot(robocode.ScannedRobotEvent e) {
-		if (e.getDistance() < 20) {
+		if (e.getDistance() < 25) {
 			fire(Rules.MAX_BULLET_POWER);
 		} else {
 			fire(Rules.MIN_BULLET_POWER / 2);
@@ -34,21 +32,19 @@ public class ChrisBot2 extends Robot {
 		scan();
 	}
 
-	/**
-	 * onHitByBullet:
-	 */
 	public void onHitByBullet(robocode.HitByBulletEvent e) {
 		ahead(100); // run away
-		scan();
 	}
 
-	/**
-	 * onHitRobot:
-	 */
 	public void onHitRobot(robocode.HitRobotEvent e) {
-
+		back(10);
+		fire(Rules.MAX_BULLET_POWER);
+		ahead(10);
 		scan();
 	}
 
-
+	public void onHitWall(robocode.HitWallEvent e) {
+		turnRight(e.getBearing() + 180);
+		ahead(50);
+	}
 }
