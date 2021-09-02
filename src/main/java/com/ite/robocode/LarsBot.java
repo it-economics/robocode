@@ -7,14 +7,14 @@
  */
 package com.ite.robocode;
 
-import robocode.BulletHitEvent;
-import robocode.HitRobotEvent;
-import robocode.HitWallEvent;
+import robocode.*;
 import robocode.Robot;
+import robocode.util.Utils;
 
 import java.awt.*;
 
 public class LarsBot extends Robot {
+    private static final double QUARTER_TURN = 90.0D;
 
     /**
      * run:  Fire's main run function
@@ -48,7 +48,12 @@ public class LarsBot extends Robot {
      * onHitByBullet:
      */
     @Override
-    public void onHitByBullet(robocode.HitByBulletEvent e) {
+    public void onHitByBullet(robocode.HitByBulletEvent hit) {
+        double degrees = Utils.normalRelativeAngleDegrees(QUARTER_TURN - (getHeading() - hit.getHeading()));
+        turnGunRight(degrees);
+        turnLeft(degrees);
+        fire(10);
+        ahead(20);
         scan();
     }
 
