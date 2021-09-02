@@ -35,7 +35,7 @@ public class DianaRobot extends Robot {
      * onHitByBullet:
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-        turnLeft((45);
+        turnLeft(45);
         ahead(10);
 
     }
