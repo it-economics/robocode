@@ -19,7 +19,7 @@ public class DianaRobot extends Robot {
         while (true) {
             turnRight(5);
             scan();
-            fire();
+            fire(5);
         }
     }
 
@@ -35,7 +35,7 @@ public class DianaRobot extends Robot {
      * onHitByBullet:
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-        turnleft(45);
+        turnLeft((45);
         ahead(10);
 
     }
