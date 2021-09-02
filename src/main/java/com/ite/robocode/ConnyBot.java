@@ -21,7 +21,9 @@ public class ConnyBot extends Robot {
     public void run() {
         goCorner();
         while (true) {
-            ahead(5);
+            ahead(10);
+            turnRadarLeft(45);
+            scan();
         }
     }
 
@@ -29,14 +31,15 @@ public class ConnyBot extends Robot {
      * onScannedRobot:
      */
     public void onScannedRobot(robocode.ScannedRobotEvent e) {
-        fire(15);
+            double absoluteBearing = getHeading() + e.getBearing();
+            double bearingFromGun = absoluteBearing - getGunHeading();
+            distanceRelativeFire(e.getDistance(),bearingFromGun);
     }
 
     /**
      * onHitByBullet:
      */
     public void onHitByBullet(robocode.HitByBulletEvent e) {
-
         scan();
     }
 
@@ -44,7 +47,6 @@ public class ConnyBot extends Robot {
      * onHitRobot:
      */
     public void onHitRobot(robocode.HitRobotEvent e) {
-
         scan();
     }
 
@@ -56,5 +58,18 @@ public class ConnyBot extends Robot {
 
     public void onHitWall(HitWallEvent e) {
         turnLeft(90);
+    }
+
+    public void distanceRelativeFire(double dist,double bearing) {
+        if (dist < 50) {
+            turnGunRight(bearing);
+            fire(15);
+        } else if (dist < 100) {
+            turnGunRight(bearing);
+            fire(10);
+        } else if (dist < 200) {
+            turnGunRight(bearing);
+            fire(5);
+        }
     }
 }
