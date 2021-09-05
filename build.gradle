@@ -14,11 +14,11 @@ plugins {
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/')
 }
 
@@ -32,7 +32,7 @@ task run(type: JavaExec, dependsOn: ['build', 'copybin']) {
     classpath += files('build/libs')
     classpath.each { println it }
     println(classpath)
-    main = 'robocode.Robocode'
+    mainClass = 'robocode.Robocode'
 }
 
 test {
