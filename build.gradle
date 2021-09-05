@@ -9,6 +9,7 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+    id "org.jetbrains.kotlin.jvm" version "1.5.30"
 }
 
 repositories {
@@ -25,6 +26,7 @@ dependencies {
 task copybin(type: Copy) {
     destinationDir = file('robots')
     from ('build/classes/java/main')
+    from ('build/classes/kotlin/main')
 }
 
 task run(type: JavaExec, dependsOn: ['build', 'copybin']) {
