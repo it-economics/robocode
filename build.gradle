@@ -9,22 +9,24 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+    id "org.jetbrains.kotlin.jvm" version "1.5.30"
 }
 
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/')
 }
 
 task copybin(type: Copy) {
     destinationDir = file('robots')
     from ('build/classes/java/main')
+    from ('build/classes/kotlin/main')
 }
 
 task run(type: JavaExec, dependsOn: ['build', 'copybin']) {
@@ -32,7 +34,7 @@ task run(type: JavaExec, dependsOn: ['build', 'copybin']) {
     classpath += files('build/libs')
     classpath.each { println it }
     println(classpath)
-    main = 'robocode.Robocode'
+    mainClass = 'robocode.Robocode'
 }
 
 test {
