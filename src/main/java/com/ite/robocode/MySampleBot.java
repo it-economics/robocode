@@ -12,65 +12,53 @@ import robocode.HitRobotEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
 
-import java.awt.Color;
+import java.awt.*;
 
-import static robocode.util.Utils.normalRelativeAngleDegrees;
-
-public class CliffBot extends Robot {
-	int dist = 50; // distance to move when we're hit
+// IMPORTANT!!!
+// DO NOT CHANGE THIS CLASS ==> CREATE YOUR OWN ROBOT, you can copy this class for starters
+public class MySampleBot extends Robot {
 
 	/**
 	 * run:  Fire's main run function
 	 */
+	@Override
 	public void run() {
 		// Set colors
 		setBodyColor(Color.black);
 		setGunColor(Color.black);
 		setRadarColor(Color.black);
 
-
-		setBulletColor(Color.red);
-
-		// Spin the gun around slowly... forever
+		// This will be the default behaviour of your robot
 		while (true) {
 			turnGunRight(10);
+			ahead(20);
+			turnLeft(15);
 		}
 	}
 
 	/**
-	 * onScannedRobot:  Fire!
+	 * onScannedRobot: if our robot sees another robot
 	 */
+	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
-		// If the other robot is close by, and we have plenty of life,
-		// fire hard!
-		if (e.getDistance() < 50 && getEnergy() > 50) {
-			fire(3);
-		} // otherwise, fire 1.
-		else {
-			fire(1);
-		}
-		// Call scan again, before we turn the gun
-		scan();
+		// do something here
 	}
 
 	/**
-	 * onHitByBullet:  Turn perpendicular to the bullet, and move a bit.
+	 * onHitByBullet:  Ouch...our robot was hit by a bullet
 	 */
+	@Override
 	public void onHitByBullet(HitByBulletEvent e) {
-		turnRight(normalRelativeAngleDegrees(90 - (getHeading() - e.getHeading())));
-
-		ahead(dist);
-		dist *= -1;
-		scan();
+		// let's back off
+		back(10);
 	}
 
 	/**
-	 * onHitRobot:  Aim at it.  Fire Hard!
+	 * onHitRobot:  Yes, we hit a robot
 	 */
+	@Override
 	public void onHitRobot(HitRobotEvent e) {
-		double turnGunAmt = normalRelativeAngleDegrees(e.getBearing() + getHeading() - getGunHeading());
-
-		turnGunRight(turnGunAmt);
+		// fire again
 		fire(3);
 	}
 }
