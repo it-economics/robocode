@@ -14,7 +14,7 @@ Requirements: In order to run Robocode, Java 6 Standard Edition (SE) or a newer 
 1. fork [Github](https://github.com/it-economics/robocode.git) project
 2. clone the forked repo into your favourite IDE (currently Eclipse and IntelliJ are automatically supported)
 3. Checkout the package structure
-4. in `com.ite.robocode` you will find a Java class `MyFirstIteRobot`
+4. in `com.ite.robocode` you will find a Java class `MySampleBot`
 5. rename or better refactor this class name to whatever you like (e.g. `MySuperRobot`). Please remember to also rename the corresponding class file if you did not refactor! This name will be your robots name. Choose wisely! 
 6. basic robots extend the `Robot` class. All methods can be manually overwritten. To find some inspiration you can checkout the `Sample` package. 
 7. let the fun begin and program your own robot behaviour. 
