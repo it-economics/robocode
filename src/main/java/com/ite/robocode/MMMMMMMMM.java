@@ -21,9 +21,6 @@ public class MMMMMMMMM extends Robot {
 	 * run:  Fire's main run function
 	 */
 
-	private Point2D headed_corner;
-	private String mode = "turning";
-
 	@Override
 	public void run() {
 		// Set colors
@@ -34,28 +31,20 @@ public class MMMMMMMMM extends Robot {
 		setRadarColor(Color.YELLOW);
 
 
-		// choose random corner
-		Random random = new Random();
-		headed_corner = new Point2D.Double(
-				random.nextDouble()*this.getBattleFieldWidth(),
-				random.nextDouble()*this.getBattleFieldHeight()
-		);
-
-
 		double heading = getHeading();
-		turnLeft(heading);
-		//turnRadarLeft(90);
-		//turnGunLeft(90);
+		if (heading < 180)
+			turnLeft(heading);
+		else
+			turnRight(heading);
 		ahead(this.getBattleFieldHeight()-getY());
 
-		// This will be the default behaviour of your robot
 		while (true) {
-			// left upper corner
-			ahead(20);
+			ahead(30);
 			turnGunLeft(180);
 			scan();
-			ahead(20);
+			ahead(30);
 			turnGunRight(180);
+			scan();
 		}
 	}
 
@@ -66,16 +55,12 @@ public class MMMMMMMMM extends Robot {
 	@Override
 	public void onScannedRobot(ScannedRobotEvent event) {
 		// do something here
-		//e.get
-		//turnGunLeft(getGunHeading() - event.getBearing());
-		//event.getHeading()
-
-		if(event.getDistance() >= 100) {
-			fire(3);
-		} else if(event.getDistance() < 100) {
-			fire(20);
-		} else if(event.getDistance() < 60) {
+		if(event.getDistance() < 20) {
 			fire(50);
+		} else if(event.getDistance() < 200) {
+			fire(10);
+		} else{
+			fire(2);
 		}
 		scan();
 	}
