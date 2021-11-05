@@ -30,7 +30,6 @@ public class MMMMMMMMM extends Robot {
 		setScanColor(Color.pink);
 		setRadarColor(Color.YELLOW);
 
-
 		double heading = getHeading();
 		if (heading < 180)
 			turnLeft(heading);
