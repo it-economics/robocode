@@ -28,10 +28,17 @@ public class Terminator extends Robot {
 		setGunColor(Color.pink);
 		setRadarColor(Color.pink);
 
+		int i = 0;
 		// This will be the default behaviour of your robot
 		while (true) {
 			ahead(5);
 			turnGunRight(20D);
+			i++;
+
+			if(i > 20) {
+				this.turnLeft(Math.random() * 90);
+				i = 0;
+			}
 		}
 	}
 
@@ -40,9 +47,8 @@ public class Terminator extends Robot {
 	 */
 	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
-		System.out.println(e.getBearing());
-		this.fire(5);
-		ahead(10);
+		double power = 700 / Math.max(e.getDistance(), 50);
+		this.fire(power);
 		scan();
 	}
 
@@ -53,7 +59,8 @@ public class Terminator extends Robot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		// let's back off
 		System.out.println("Screw you");
-		ahead(e.getVelocity() * 5);
+		this.turnLeft(45);
+		ahead(90);
 	}
 
 	/**
