@@ -16,7 +16,7 @@ import java.awt.*;
 
 // IMPORTANT!!!
 // DO NOT CHANGE THIS CLASS ==> CREATE YOUR OWN ROBOT, you can copy this class for starters
-public class MySampleBot extends Robot {
+public class ClapTrap extends Robot {
 
 	/**
 	 * run:  Fire's main run function
