@@ -31,11 +31,7 @@ public class MMMMMMMMM extends Robot {
 		setRadarColor(Color.YELLOW);
 
 		double heading = getHeading();
-		if (heading < 180)
-			turnLeft(heading);
-		else
-			turnRight(heading);
-		ahead(this.getBattleFieldHeight()-getY());
+		turnLeft(heading);
 
 		while (true) {
 			ahead(30);
