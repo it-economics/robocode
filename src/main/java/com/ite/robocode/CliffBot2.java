@@ -16,6 +16,7 @@ import java.awt.*;
 // CL4P-TP is best Trap
 public class CliffBot2 extends Robot {
 
+	int turnDirection = 1;
 	/**
 	 * run:  Fire's main run function
 	 */
@@ -28,8 +29,7 @@ public class CliffBot2 extends Robot {
 
 		// This will be the default behaviour of your robot
 		while (true) {
-			turnGunRight(30);
-			ahead(30);
+			turnRight(10 * turnDirection);
 		}
 	}
 
@@ -38,8 +38,23 @@ public class CliffBot2 extends Robot {
 	 */
 	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
-		fire(3);
-		scan();
+
+		if (e.getDistance() < 140) {
+			fire(3);
+		} else if (e.getDistance() < 240){
+			fire(2);
+		}  else if (e.getDistance() < 540){
+			fire(1);
+		}
+
+		if (e.getBearing() >= 0) {
+			turnDirection = 1;
+		} else {
+			turnDirection = -1;
+		}
+		turnRight(e.getBearing());
+		ahead(e.getDistance() + 5);
+		scan(); // Might want to move ahead again!
 	}
 
 	/**
@@ -48,7 +63,7 @@ public class CliffBot2 extends Robot {
 	@Override
 	public void onHitByBullet(HitByBulletEvent e) {
 		// let's back off
-		back(10);
+		back(30);
 	}
 
 	/**
@@ -56,8 +71,14 @@ public class CliffBot2 extends Robot {
 	 */
 	@Override
 	public void onHitRobot(HitRobotEvent e) {
-		// fire again
-		fire(3);
+		if (e.getBearing() >= 0) {
+			turnDirection = 1;
+		} else {
+			turnDirection = -1;
+		}
+		turnRight(e.getBearing());
+		fire(1);
+		ahead(40);
 	}
 
 	@Override
