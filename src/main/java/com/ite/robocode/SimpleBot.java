@@ -70,4 +70,9 @@ public class SimpleBot extends Robot {
 		super.onHitWall(event);
 		turnLeft(15);
 	}
+
+	@Override
+	public void scan() {
+		super.scan();
+	}
 }

@@ -14,6 +14,10 @@ import java.util.Random;
 
 import java.awt.*;
 
+enum BotMode {
+	DEFAULT,
+	SIMPLEBOT,
+};
 // IMPORTANT!!!
 // DO NOT CHANGE THIS CLASS ==> CREATE YOUR OWN ROBOT, you can copy this class for starters
 public class ClapTrap extends Robot {
@@ -25,42 +29,48 @@ public class ClapTrap extends Robot {
 	private boolean test = false;
 	private int runMode = 0;
 	private Random rand = new Random();
+
+	private BotMode botMode = BotMode.SIMPLEBOT;
+
+	public void claptrapRun1(){
+			ahead(100); //Go ahead 100 pixels
+			turnGunRight(360); //scan
+			back(75); //Go back 75 pixels
+			turnGunRight(360); //scan
+	}
+	public void claptrapRun2(){
+		ahead(100); //Go ahead 100 pixels
+		turnGunLeft(360); //scan
+		back(90); //Go back 75 pixels
+		turnGunLeft(360); //scan
+	}
+	public void simplebotRun(){
+		ahead(100);
+	}
+
 	@Override
 	public void run() {
 		// Set colors
-		if (test){
-			setBodyColor(Color.yellow);
-			setGunColor(Color.black);
-			setRadarColor(Color.red);
-		} else{
-			// Java 'Color' class takes 3 floats, from 0 to 1.
-			float r = rand.nextFloat();
-			float g = rand.nextFloat();
-			float b = rand.nextFloat();
-
-			Color randomColor = new Color(r, g, b);
-
-			setBodyColor(randomColor);
-			setGunColor(randomColor);
-			setRadarColor(randomColor);
-		}
-		test = !test;
+		setBodyColor(Color.yellow);
+		setGunColor(Color.black);
+		setRadarColor(Color.red);
 
 		// This will be the default behaviour of your robot
 		while(true){
-			if(runMode % 3 == 0){
-				ahead(100); //Go ahead 100 pixels
-				turnGunLeft(360); //scan
-				back(90); //Go back 75 pixels
-				turnGunLeft(360); //scan
-			}else{
-				ahead(100); //Go ahead 100 pixels
-				turnGunRight(360); //scan
-				back(75); //Go back 75 pixels
-				turnGunRight(360); //scan
+			if(getTime() > 9999){
+				botMode = BotMode.DEFAULT;
 			}
-			runMode++;
-			//For each second the robot goes ahead 25 pixels.
+			if(botMode == BotMode.DEFAULT){
+				if(runMode % 2 == 0){
+					claptrapRun1();
+				}else{
+					claptrapRun2();
+				}
+				runMode++;
+			}else if(botMode == BotMode.SIMPLEBOT){
+				simplebotRun();
+			}
+
 		}
 	}
 
@@ -100,20 +110,27 @@ public class ClapTrap extends Robot {
 	private int onHitMode = 0;
 	@Override
 	public void onHitByBullet(HitByBulletEvent e){
-		double energy = getEnergy();
-		onHitMode++;
-		if(onHitMode % 2 == 0){
-			ahead(100);
-			scan();
-		}else{
-			double bearing = e.getBearing(); //Get the direction which is arrived the bullet.
-			if(energy < 100){ // if the energy is low, the robot go away from the enemy
-				turnRight(-bearing); //This isn't accurate but release your robot.
-				ahead(100); //The robot goes away from the enemy.
+		if(botMode == BotMode.DEFAULT){
+			double energy = getEnergy();
+			onHitMode++;
+			if(onHitMode % 2 == 0){
+				ahead(100);
+				scan();
+			}else{
+				double bearing = e.getBearing(); //Get the direction which is arrived the bullet.
+				if(energy < 100){ // if the energy is low, the robot go away from the enemy
+					turnRight(-bearing); //This isn't accurate but release your robot.
+					ahead(100); //The robot goes away from the enemy.
+				}
+				else
+					turnRight(360); // scan
 			}
-			else
-				turnRight(360); // scan
+		}else{
+			double bearing = e.getBearing(); //get the bearing of the wall
+			turnRight(-bearing); //This isn't accurate but release your robot.
+			ahead(100); //The robot goes away from the wall.
 		}
+
 	}
 
 	@Override
@@ -129,7 +146,16 @@ public class ClapTrap extends Robot {
 	 */
 	@Override
 	public void onHitRobot(HitRobotEvent e) {
-		// fire again
-		fire(3);
+		if(botMode == BotMode.SIMPLEBOT){
+			double bearing = e.getBearing(); //get the bearing of the wall
+			turnRight(-bearing); //This isn't accurate but release your robot.
+			ahead(100); //The robot goes away from the wall.
+		}else{
+			fire(3);
+		}
+
 	}
+
+
+
 }
