@@ -7,16 +7,16 @@
  */
 package com.ite.robocode;
 
-import robocode.HitByBulletEvent;
-import robocode.HitRobotEvent;
+import robocode.*;
 import robocode.Robot;
-import robocode.ScannedRobotEvent;
 
 import java.awt.*;
 
 // IMPORTANT!!!
 // DO NOT CHANGE THIS CLASS ==> CREATE YOUR OWN ROBOT, you can copy this class for starters
-public class MySampleBot extends Robot {
+public class Rambot extends Robot {
+
+	private boolean ramMode = false;
 
 	/**
 	 * run:  Fire's main run function
@@ -24,15 +24,17 @@ public class MySampleBot extends Robot {
 	@Override
 	public void run() {
 		// Set colors
-		setBodyColor(Color.black);
-		setGunColor(Color.black);
+		setBodyColor(Color.blue);
+		setGunColor(Color.white);
 		setRadarColor(Color.black);
 
 		// This will be the default behaviour of your robot
 		while (true) {
-			turnGunRight(10);
 			ahead(20);
-			turnLeft(15);
+			if (!ramMode) {
+				turnGunRight(10);
+				turnRight(15);
+			}
 		}
 	}
 
@@ -41,7 +43,10 @@ public class MySampleBot extends Robot {
 	 */
 	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
-		// do something here
+		getHeading();
+		double heading = e.getHeading();
+		ramMode = true;
+		fire(1);
 	}
 
 	/**
@@ -51,6 +56,8 @@ public class MySampleBot extends Robot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		// let's back off
 		back(10);
+		turnRight(20);
+		ramMode = false;
 	}
 
 	/**
@@ -60,5 +67,10 @@ public class MySampleBot extends Robot {
 	public void onHitRobot(HitRobotEvent e) {
 		// fire again
 		fire(3);
+	}
+
+	@Override
+	public void onHitWall(HitWallEvent event) {
+		turnRight(90);
 	}
 }
