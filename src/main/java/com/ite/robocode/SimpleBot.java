@@ -7,6 +7,8 @@
  */
 package com.ite.robocode;
 
+import robocode.AdvancedRobot;
+import robocode.BulletHitBulletEvent;
 import robocode.HitByBulletEvent;
 import robocode.HitRobotEvent;
 import robocode.HitWallEvent;
@@ -17,57 +19,73 @@ import java.awt.*;
 
 // IMPORTANT!!!
 // DO NOT CHANGE THIS CLASS ==> CREATE YOUR OWN ROBOT, you can copy this class for starters
-public class SimpleBot extends Robot {
+public class SimpleBot extends AdvancedRobot {
 
-	/**
-	 * run:  Fire's main run function
-	 */
-	@Override
-	public void run() {
-		// Set colors
-		setBodyColor(Color.black);
-		setGunColor(Color.black);
-		setRadarColor(Color.black);
+    /**
+     * run:  Fire's main run function
+     */
+    @Override
+    public void run() {
+        // Set colors
+        setBodyColor(Color.BLUE);
+        setGunColor(Color.YELLOW);
+        setRadarColor(Color.GREEN);
+        setAdjustRadarForRobotTurn(true);
 
-		// This will be the default behaviour of your robot
-		while (true) {
-			ahead(100);
-		}
-	}
+        // This will be the default behaviour of your robot
+        while (true) {
+            ahead(100);
+        }
+    }
 
-	/**
-	 * onScannedRobot: if our robot sees another robot
-	 */
-	@Override
-	public void onScannedRobot(ScannedRobotEvent e) {
-		fire(1);
-		turnLeft(15);
-		ahead(10);
-		// do something here
-	}
+    /**
+     * onScannedRobot: if our robot sees another robot
+     */
+    @Override
+    public void onScannedRobot(ScannedRobotEvent e) {
+        turnGunRight(getHeading() - getRadarHeading() + e.getBearing());
+        turnRadarRight(getHeading() - getRadarHeading() + e.getBearing());
+        fireBullet(3);
+        fire(3);
+        turnLeft(45);
+        ahead(100);
+        scan();
+     }
 
-	/**
-	 * onHitByBullet:  Ouch...our robot was hit by a bullet
-	 */
-	@Override
-	public void onHitByBullet(HitByBulletEvent e) {
-		// let's back off
-		turnLeft(15);
-		back(10);
-	}
+    /**
+     * onHitByBullet:  Ouch...our robot was hit by a bullet
+     */
+    @Override
+    public void onHitByBullet(HitByBulletEvent e) {
+        turnRadarRight(getHeading() - getRadarHeading() + e.getBearing());
+        fireBullet(3);
+        fire(3);
+        // let's back off
+        back(50);
+        scan();
+    }
 
-	/**
-	 * onHitRobot:  Yes, we hit a robot
-	 */
-	@Override
-	public void onHitRobot(HitRobotEvent e) {
-		// fire again
-		fire(1);
-	}
+    @Override
+    public void onBulletHitBullet(BulletHitBulletEvent event) {
+        super.onBulletHitBullet(event);
+        fireBullet(3);
+        fire(3);
+        scan();
+    }
 
-	@Override
-	public void onHitWall(HitWallEvent event) {
-		super.onHitWall(event);
-		turnLeft(15);
-	}
+    /**
+     * onHitRobot:  Yes, we hit a robot
+     */
+    @Override
+    public void onHitRobot(HitRobotEvent e) {
+        // fire again
+        turnRight(45);
+        ahead(50);
+    }
+
+    @Override
+    public void onHitWall(HitWallEvent e) {
+        super.onHitWall(e);
+        turnLeft(90 - e.getBearing());
+    }
 }
