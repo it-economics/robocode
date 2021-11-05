@@ -38,6 +38,7 @@ public class CliffBot2 extends Robot {
 	 */
 	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
+
 		if (e.getDistance() < 140) {
 			fire(3);
 		} else if (e.getDistance() < 240){
