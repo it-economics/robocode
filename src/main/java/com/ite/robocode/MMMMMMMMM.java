@@ -7,10 +7,8 @@
  */
 package com.ite.robocode;
 
-import robocode.HitByBulletEvent;
-import robocode.HitRobotEvent;
+import robocode.*;
 import robocode.Robot;
-import robocode.ScannedRobotEvent;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -33,6 +31,7 @@ public class MMMMMMMMM extends Robot {
 		setGunColor(Color.pink);
 		setRadarColor(Color.pink);
 		setScanColor(Color.pink);
+		setRadarColor(Color.YELLOW);
 
 
 		// choose random corner
@@ -45,30 +44,18 @@ public class MMMMMMMMM extends Robot {
 
 		double heading = getHeading();
 		turnLeft(heading);
+		//turnRadarLeft(90);
+		//turnGunLeft(90);
 		ahead(this.getBattleFieldHeight()-getY());
-		turnLeft(90);
-		turnGunLeft(90);
-
-
-
-
 
 		// This will be the default behaviour of your robot
 		while (true) {
 			// left upper corner
-			int steps = 20;
-			double total_distnace = this.getBattleFieldWidth()-this.getX() + 10;
-			for (int i = 0; i <= steps; i++){
-				ahead(total_distnace/steps);
-				fire(1);
-			}
-			turnLeft(180);
+			ahead(20);
 			turnGunLeft(180);
-			total_distnace = this.getBattleFieldWidth() - 10;
-			for (int i = 0; i <= steps; i++){
-				ahead(total_distnace/steps);
-				fire(1);
-			}
+			scan();
+			ahead(20);
+			turnGunRight(180);
 		}
 	}
 
@@ -77,9 +64,20 @@ public class MMMMMMMMM extends Robot {
 	 * onScannedRobot: if our robot sees another robot
 	 */
 	@Override
-	public void onScannedRobot(ScannedRobotEvent e) {
+	public void onScannedRobot(ScannedRobotEvent event) {
 		// do something here
 		//e.get
+		//turnGunLeft(getGunHeading() - event.getBearing());
+		//event.getHeading()
+
+		if(event.getDistance() >= 100) {
+			fire(3);
+		} else if(event.getDistance() < 100) {
+			fire(20);
+		} else if(event.getDistance() < 60) {
+			fire(50);
+		}
+		scan();
 	}
 
 	/**
@@ -88,7 +86,7 @@ public class MMMMMMMMM extends Robot {
 	@Override
 	public void onHitByBullet(HitByBulletEvent e) {
 		// let's back off
-		back(10);
+		//back(10);
 	}
 
 	/**
@@ -97,6 +95,14 @@ public class MMMMMMMMM extends Robot {
 	@Override
 	public void onHitRobot(HitRobotEvent e) {
 		// fire again
-		fire(3);
+		back(20);
+		//fire(3);
+	}
+
+
+	@Override
+	public void onHitWall(HitWallEvent event) {
+		turnLeft(90);
+		//turnRadarLeft(90);
 	}
 }
