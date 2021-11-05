@@ -37,6 +37,7 @@ public class Terminator extends Robot {
 			this.turnRadarLeft(15);
 			ahead(5);
 			turnLeft(3);
+			scan();
 		}
 	}
 
