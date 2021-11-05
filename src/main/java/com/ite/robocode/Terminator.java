@@ -28,12 +28,17 @@ public class Terminator extends Robot {
 		setGunColor(Color.pink);
 		setRadarColor(Color.pink);
 
+		ahead(this.getBattleFieldHeight());
+
 		int i = 0;
 		// This will be the default behaviour of your robot
 		while (true) {
-			ahead(5);
 			turnGunRight(20D);
 			i++;
+
+			if(i % 5 == 0) {
+				ahead(5);
+			}
 
 			if(i > 20) {
 				this.turnLeft(Math.random() * 90);
@@ -47,7 +52,7 @@ public class Terminator extends Robot {
 	 */
 	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
-		double power = 700 / Math.max(e.getDistance(), 50);
+		double power = 700 / Math.max(e.getDistance(), 80);
 		this.fire(power);
 		scan();
 	}
@@ -58,9 +63,8 @@ public class Terminator extends Robot {
 	@Override
 	public void onHitByBullet(HitByBulletEvent e) {
 		// let's back off
-		System.out.println("Screw you");
-		this.turnLeft(45);
-		ahead(90);
+		this.turnRight(90);
+		ahead(getBattleFieldHeight() / 3);
 	}
 
 	/**
@@ -76,20 +80,20 @@ public class Terminator extends Robot {
 
 	@Override
 	public void onHitWall(HitWallEvent event) {
-		double deg = event.getBearing();
-		turnLeft(deg * 2);
+		turnLeft(180);
+		this.ahead(50);
 	}
 
 	@Override
 	public void fire(double power) {
-		if (this.getEnergy() > 10) {
+		if (this.getEnergy() > 10  && this.getGunHeat() == 0) {
 			super.fire(power);
 		}
 	}
 
 	@Override
 	public Bullet fireBullet(double power) {
-		if (this.getEnergy() > power) {
+		if (this.getEnergy() > power && this.getGunHeat() == 0) {
 			return super.fireBullet(power);
 		} else {
 			return null;
