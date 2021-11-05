@@ -16,8 +16,7 @@ import java.awt.*;
 // DO NOT CHANGE THIS CLASS ==> CREATE YOUR OWN ROBOT, you can copy this class for starters
 public class Florian2Bot extends Robot {
 
-    boolean gunRight = true;
-    boolean stop = false;
+    boolean bulletHit = false;
 
     /**
      * run:  Fire's main run function
@@ -33,6 +32,9 @@ public class Florian2Bot extends Robot {
 
         while (true) {
             turnGunRight(10D);
+            if (!bulletHit) {
+                ahead(30);
+            }
         }
     }
 
@@ -47,8 +49,10 @@ public class Florian2Bot extends Robot {
 
     @Override
     public void onBulletHit(BulletHitEvent event) {
+        bulletHit = true;
         fire(3);
     }
+
 
     /**
      * onHitByBullet:  Ouch...our robot was hit by a bullet
@@ -63,7 +67,8 @@ public class Florian2Bot extends Robot {
     @Override
     public void onHitWall(HitWallEvent event) {
         turnRight(180);
-        ahead(100);
+        ahead(250);
+        scan();
     }
 
     /**
