@@ -7,10 +7,8 @@
  */
 package com.ite.robocode;
 
-import robocode.HitByBulletEvent;
-import robocode.HitRobotEvent;
+import robocode.*;
 import robocode.Robot;
-import robocode.ScannedRobotEvent;
 
 // import java.util.Random;
 
@@ -52,9 +50,13 @@ public class ClapTrap extends Robot {
 		}
 
 		// This will be the default behaviour of your robot
-		while (true) {
-			betterTurnGunRight(10);
-			ahead(1);
+		while(true){
+			ahead(100); //Go ahead 100 pixels
+			turnGunRight(360); //scan
+			back(75); //Go back 75 pixels
+			turnGunRight(360); //scan
+
+			//For each second the robot goes ahead 25 pixels.
 		}
 	}
 
@@ -72,9 +74,19 @@ public class ClapTrap extends Robot {
 	 * onScannedRobot: if our robot sees another robot
 	 */
 	@Override
-	public void onScannedRobot(ScannedRobotEvent e) {
-		// do something
-		fire(1);
+	public void onScannedRobot(ScannedRobotEvent e){
+		double distance = e.getDistance(); //get the distance of the scanned robot
+		if(distance > 800) //this conditions adjust the fire force according the distance of the scanned robot.
+			fire(5);
+		else if(distance > 600 && distance <= 800)
+			fire(4);
+		else if(distance > 400 && distance <= 600)
+			fire(3);
+		else if(distance > 200 && distance <= 400)
+			fire(2);
+		else if(distance < 200)
+			fire(1);
+		scan();
 	}
 
 	/**
@@ -82,15 +94,30 @@ public class ClapTrap extends Robot {
 	 */
 	@Override
 	public void onHitByBullet(HitByBulletEvent e) {
-		betterTurnGunLeft(10);
+		turnGunLeft(10);
 		ahead(10);
+		scan();
 	}
-	/*
-	@Override
-	public void onHitWall(){
-		turnRadarLeft(90);
-		ahead(40);
+
+	/* coward mode */
+/*
+	double energy = getEnergy();
+	public void onHitByBullet(HitByBulletEvent e){
+		double bearing = e.getBearing(); //Get the direction which is arrived the bullet.
+		if(energy < 100){ // if the energy is low, the robot go away from the enemy
+			turnRight(-bearing); //This isn't accurate but release your robot.
+			ahead(100); //The robot goes away from the enemy.
+		}
+		else
+			turnRight(360); // scan
 	}*/
+
+	@Override
+	public void onHitWall(HitWallEvent e){
+		double bearing = e.getBearing(); //get the bearing of the wall
+		turnRight(-bearing); //This isn't accurate but release your robot.
+		ahead(100); //The robot goes away from the wall.
+	}
 
 	/**
 	 * onHitRobot:  Yes, we hit a robot
