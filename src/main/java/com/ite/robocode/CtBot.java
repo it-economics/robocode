@@ -8,6 +8,7 @@ import robocode.Rules;
 import robocode.ScannedRobotEvent;
 
 import java.awt.*;
+import java.util.Random;
 
 public class CtBot extends Robot {
 
@@ -24,7 +25,7 @@ public class CtBot extends Robot {
 		// This will be the default behaviour of your robot
 		while (true) {
 			turnGunRight(10);
-			//ahead(20);
+			ahead(40);
 			//turnLeft(15);
 		}
 	}
@@ -34,9 +35,9 @@ public class CtBot extends Robot {
 	 */
 	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
-		if(e.getDistance() < 50) {
+		if(e.getDistance() < 200) {
 			fire(Rules.MAX_BULLET_POWER);
-		} else if(e.getDistance() < 100) {
+		} else if(e.getDistance() < 300) {
 			fire(Rules.MIN_BULLET_POWER);
 		}
 	}
@@ -47,6 +48,7 @@ public class CtBot extends Robot {
 	@Override
 	public void onHitByBullet(HitByBulletEvent e) {
 		// run....
+		switchColor();
 		double bearing = e.getBearing(); //Get the direction which is arrived the bullet.
 		turnRight(-bearing); //This isn't accurate but release your robot.
 		ahead(100); //The robot goes away from the enemy.
@@ -54,10 +56,9 @@ public class CtBot extends Robot {
 
 	@Override
 	public void onHitWall(HitWallEvent event) {
-		back(30);
-		turnLeft(15);
+		back(100);
+		turnLeft(30);
 	}
-
 
 	/**
 	 * onHitRobot:  Yes, we hit a robot
@@ -66,5 +67,14 @@ public class CtBot extends Robot {
 	public void onHitRobot(HitRobotEvent e) {
 		// fire again
 		fire(3);
+	}
+
+	private void switchColor() {
+		Color[] colors = {Color.BLACK, Color.WHITE, Color.RED, Color.GREEN};
+		Color c = colors[new Random().nextInt(3) + 1];
+		System.out.println("CtBot: set color to " + c);
+		setBodyColor(c);
+		setGunColor(c);
+		setRadarColor(c);
 	}
 }
