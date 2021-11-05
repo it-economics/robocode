@@ -58,6 +58,7 @@ public class Terminator extends Robot {
 	@Override
 	public void onHitByBullet(HitByBulletEvent e) {
 		// let's back off
+		ahead(50);
 		System.out.println("Screw you");
 		this.turnLeft(45);
 		ahead(90);
