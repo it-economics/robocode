@@ -46,6 +46,8 @@ public class Terminator extends Robot {
 	 */
 	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
+		this.turnGunLeft(this.getGunHeading() - e.getBearing());
+		this.fire(5);
 	}
 
 	/**
@@ -55,7 +57,8 @@ public class Terminator extends Robot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		// let's back off
 		System.out.println("Screw you");
-		ahead(20);
+		this.turnGunLeft(this.getGunHeading() - e.getBearing());
+		this.fire(1);
 	}
 
 	/**
