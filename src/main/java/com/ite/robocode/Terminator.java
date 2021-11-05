@@ -1,5 +1,4 @@
 /**
-/**
  * Copyright (c) 2001-2019 Mathew A. Nelson and Robocode contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -29,15 +28,10 @@ public class Terminator extends Robot {
 		setGunColor(Color.pink);
 		setRadarColor(Color.pink);
 
-		setAdjustGunForRobotTurn(true);
-		setAdjustRadarForGunTurn(true);
-
 		// This will be the default behaviour of your robot
 		while (true) {
-			this.turnRadarLeft(15);
 			ahead(5);
-			turnLeft(3);
-			scan();
+			turnGunRight(20D);
 		}
 	}
 
@@ -46,8 +40,10 @@ public class Terminator extends Robot {
 	 */
 	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
-		this.turnGunLeft(this.getGunHeading() - e.getBearing());
+		System.out.println(e.getBearing());
 		this.fire(5);
+		ahead(10);
+		scan();
 	}
 
 	/**
@@ -57,8 +53,7 @@ public class Terminator extends Robot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		// let's back off
 		System.out.println("Screw you");
-		this.turnGunLeft(this.getGunHeading() - e.getBearing());
-		this.fire(1);
+		ahead(e.getVelocity() * 5);
 	}
 
 	/**
@@ -67,8 +62,9 @@ public class Terminator extends Robot {
 	@Override
 	public void onHitRobot(HitRobotEvent e) {
 		// fire again
-		this.turnGunLeft(this.getGunHeading() - e.getBearing());
 		this.fire(5);
+		this.turnLeft(45);
+		this.ahead(50);
 	}
 
 	@Override
