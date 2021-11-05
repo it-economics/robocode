@@ -15,7 +15,7 @@ import robocode.ScannedRobotEvent;
 import java.awt.*;
 
 // IMPORTANT!!!
-// DO NOT CHANGE THIS CLASS ==> CREATE YOUR OWN ROBOT, you can copy this class for starters
+// CL4P-TP is best Trap
 public class MySampleBot extends Robot {
 
 	/**
