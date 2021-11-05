@@ -34,14 +34,13 @@ public class BomaxBot extends Robot {
 		while (getEnergy() > 0) {
 			ahead(Rules.MAX_VELOCITY);
 			turnLeft(Rules.MAX_TURN_RATE);
-			turnRadarLeft(10);
+			fire(3);
 			scan();
 		}
 	}
 
 	@Override
 	public void onScannedRobot(ScannedRobotEvent event) {
-		turnGunLeft(getGunHeading() - event.getBearing());
 		if(event.getDistance() >= 20) {
 			fire(1);
 		} else if(event.getDistance() < 20) {
@@ -63,16 +62,6 @@ public class BomaxBot extends Robot {
 	public void onHitByBullet(HitByBulletEvent event) {
 		turnLeft(90 - event.getBearing());
 		back(Rules.MAX_VELOCITY);
-		scan();
-	}
-
-	@Override
-	public void onBulletMissed(BulletMissedEvent event) {
-		if(random.nextBoolean()) {
-			turnGunRight(Rules.MAX_TURN_RATE);
-		} else {
-			turnGunLeft(Rules.MAX_TURN_RATE);
-		}
 		scan();
 	}
 
